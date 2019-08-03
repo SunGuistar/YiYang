@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>退住登记</title>
+<style>
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+font-weight:900;
+text-align:center;
+color:white
+}
+/* “退住登记”文本 */
+.tzdj{
+background-color:#666699;
+width:1170px;
+height:60px;
+position:absolute;
+left:5px;
+top:5px;
+font-size:30px;
+line-height:60px;
+}
+/* “信息查询”文本 */
+.xx{
+background-color:#666699;
+width:300px;
+height:65px;
+position:absolute;
+left:441px;
+top:200px;
+border-radius:10px;
+font-size:22px;
+line-height:65px;
+}
+/* “退住办理”文本 */
+.tzbl{
+background-color:#666699;
+width:300px;
+height:65px;
+position:absolute;
+left:441px;
+top:400px;
+border-radius:10px;
+font-size:22px;
+line-height:65px;
+}
+/* 按钮鼠标悬停 */
+.xt:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+</style>
+
+<script>
+//地址数组
+var Cdz=new Array();
+Cdz[0]="tz_xx.html";
+Cdz[1]="tz_bl.html";
+Cdz[2]="tz_bl_sg.html";
+//向父页面内联框架传地址
+function Acz(dz)
+{
+	parent.document.getElementById("change").src=dz;
+}
+</script>
+</head>
+
+<body>
+<!--主标题-->
+<div class="tzdj">
+	<p>
+		退住登记
+	</p>
+</div>
+<!--信息查询按钮-->
+<div class="xx xt">
+	<p onclick="Acz(Cdz[0])">
+		退住信息处理/信息查询
+	</p>
+</div>
+<!--退住办理按钮-->
+<div class="tzbl xt">
+	<p onclick="Acz(Cdz[2])">
+		退住办理
+	</p>
+</div>
+</body>
+</html>

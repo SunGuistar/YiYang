@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>删除护理类型页面</title>
+</head>
+<body>
+    <form action="/remove_nursing_type/" method="post">
+        {% csrf_token %}
+        <p>护理类型ID</p>
+        <input type="text" name="type_id">
+        <p>护理类型名称</p>
+        <input type="text" name="name">
+        <input type="submit" value="提交">
+    </form>
+
+    <p>返回信息</p>
+    <p>查询到{{ num }}条数据</p>
+    <p>{{ msg }}</p>
+</body>
+</html>

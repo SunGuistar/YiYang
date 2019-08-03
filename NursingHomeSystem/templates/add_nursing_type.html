@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加护理类型页面</title>
+</head>
+<body>
+    <form action="/add_nursing_type/" method="post">
+        {% csrf_token %}
+        <p>护理类型名称</p>
+        <input type="text" name="name">
+        <p>护理类型描述</p>
+        <input type="text" name="details">
+        <input type="submit" value="提交">
+    </form>
+
+    <p>返回信息</p>
+    <p>{{ msg }}</p>
+</body>
+</html>

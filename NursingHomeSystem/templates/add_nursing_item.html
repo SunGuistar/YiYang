@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加护理项目页面</title>
+</head>
+<body>
+    <form action="/add_nursing_item/" method="post">
+        {% csrf_token %}
+        <p>护理项目名称</p>
+        <input type="text" name="name">
+        <p>价格</p>
+        <input type="text" name="price">
+        <p>护理类型</p>
+        <input type="text" name="item_type">
+        <p>是否增值服务</p>
+        <input type="radio" name="add_service" value="True">是<br>
+        <input type="radio" name="add_service" value="False">否<br>
+        <p>描述</p>
+        <input type="text" name="details">
+        <p>状态</p>
+        <input type="text" name="status">
+        <input type="submit" value="提交">
+    </form>
+
+    <p>返回信息</p>
+    <p>{{ msg }}</p>
+</body>
+</html>

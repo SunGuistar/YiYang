@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script type="text/javascript" src="jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>信息查询/退住信息处理</title>
+<style>
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.head1{
+background-color:#666699;
+width:1170px;
+height:60px;
+position:absolute;
+left:5px;
+top:5px;
+}
+/* 主标题文本 */
+.head2{
+color:white;
+font-size:30px;
+line-height:60px;
+font-weight:900;
+text-align:center;
+}
+/* 查询模块背景1 */
+.table1{
+background-color:#666699;
+height:55px;
+position:absolute;
+left:15px;
+top:86px;
+font-size:20px;
+color:white;
+overflow:hidden;
+text-align:center;
+}
+/* 查询按钮 */
+.search2{
+background-color:#666699;
+width:180px;
+height:55px;
+position:absolute;
+left:515px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+}
+/* 鼠标悬停 */
+.touch:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+/* 前往退住办理按钮 */
+.goto{
+background-color:#666699;
+width:180px;
+height:55px;
+position:absolute;
+left:695px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+}
+/* 排序下拉框 */
+.table2{
+background-color:#666699;
+width:290px;
+position:absolute;
+left:875px;
+top:86px;
+font-size:20px;
+text-align:center;
+line-height:55px;
+height:55px;
+}
+/* 主要表格 */
+table.one{
+padding:0px;
+margin:0px;
+border-collapse:collapse;
+width:1150px;
+text-align:center;
+position:absolute;
+left:15px;
+top:141px;
+font-size:20px;
+overflow: hidden; 
+}
+table.one thead tr th{
+background-color:#666699;
+color:white;
+height:55px;
+}
+table.one tbody tr td{
+background-color:white;
+color:black;
+height:55px;
+}
+table tbody tr td input[type="text"]{
+width:100px;
+}
+/* 信息显示模块 */
+.msg{
+background-color:#666699;
+position:absolute;
+left:15px;
+top:490px;
+font-size:20px;
+text-align:center;
+color:white;
+}
+/* 翻页模块 */
+ul.one{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:315px;
+top:490px;
+}
+ul.one li
+{
+color:white;
+float:left;
+width:85px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+}
+
+/* 批量处理模块 */
+ul.two{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:250px;
+top:545px;
+}
+ul.two li
+{
+float:left;
+width:230px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+display:inline-block;
+color:white;
+}
+
+li p:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+/*操作按钮*/
+a{
+padding-left:10px;
+text-align:center;
+line-height:55px;
+font-size:20px;
+display:inline-block;
+}
+a:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+</style>
+
+</script>
+</head>
+
+<body>
+<!--主标题-->
+<div class="head1">
+<p class="head2">
+信息查询/退住信息处理
+</p>
+</div>
+
+
+<!--查询模块-->
+<div>
+<table class="table1" >
+<tr >
+<!--客户ID查询-->
+<td width="250px" >
+
+客户ID: <input type="text" style="width:100px;" id="search_id" >
+</td>
+<!--退住类型查询-->
+<td width="250px" >
+ 退住类型: <input type="text" id="search_lx" style="width:100px;">
+</td>
+</tr>
+</table>
+
+</div>
+
+
+
+<!--查询按钮-->
+<div class="touch search2">
+<p onclick="xxsearch()">
+查询
+</p>
+</div>
+
+<!--前往退住办理按钮-->
+<div class="touch goto">
+<p onclick="Atz(Bdz[2])">
+前往退住办理
+</p>
+</div>
+
+
+<!--排序下拉框-->
+<div class="table2">
+<select id="pxval" style="width:150px;" onchange="xxpx()" >
+<option value="0">默认排序</option>
+<option value="1">客户ID</option>
+</select>
+</div>
+
+<!--表格-->
+<table border="1" class="one" id="mybg">
+
+<thead>
+<tr>
+<th width="8%">
+<input type="checkbox" id="allcheck" onclick="CheckAll">
+</th>
+<th width="12%">客户ID</th>
+<th width="12%">退住类型</th>
+<th width="12%">退住原因</th>
+<th width="12%">退住时间</th>
+<th width="12%">申请时间</th>
+<th width="12%">备注</th>
+<th width="20%">操作</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+
+
+</table>
+
+<!--信息显示/翻页模块-->
+<div>
+<table class="msg">
+<tr height="51px">
+<td width="85px">有</td>
+<td width="127px" id="mess">0</td>
+<td width="85px">条信息</td>
+</tr>
+</table>
+
+<ul class="one">
+<li></li>
+<li><p onclick="xxpage(0)">首页</p></li>
+<li><p onclick="xxpage(1)">上一页</p></li>
+<li id="nowpage">0</li>
+<li>/</li>
+<li id="allpage">0</li>
+<li><p onclick="xxpage(2)">下一页</p></li>
+<li><p onclick="xxpage(3)">尾页</p></li>
+<li>
+<table>
+<tr >
+<td height="49px">
+<input style="text;width:100px;" id="pagetz">
+</td>
+</tr>
+</table>
+</li>
+<li><p onclick="xxpage(4)">跳转</p></li>
+</ul>
+</div>
+
+<!--批量处理模块-->
+<div>
+<ul class="two">
+<li><p onclick="deleteall(0)">批量删除所选项</p></li>
+<li><p onclick="deleteall(1)">批量审核所选项</p></li>
+<li><p onclick="Atz(Bdz[0])">返回</p></li>
+</ul>
+</div>
+
+</body>
+</html>

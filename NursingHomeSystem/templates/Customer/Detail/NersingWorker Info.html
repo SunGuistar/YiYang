@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>护工信息</title>
+
+    <link href="../../static/Customer/css/styles_CheckIn_bl_sg1.css" type="text/css" rel="stylesheet"/>
+     <script type="text/javascript" src="../../static/check_out/js/jquery.js" ></script>
+
+  
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.back{
+background-color:#666699;
+width:1100px;
+height:55px;
+position:absolute;
+left:15px;
+top:15px;
+line-height:55px;
+padding-left:23px;
+
+ 
+}
+/* 主标题"客户基本信息填写"文本 */
+.head{
+color:white;
+font-weight:900;
+font-size:30px;
+text-align:center;
+}
+/* 主背景 */
+.back2{
+  border-width:0px;
+  position:absolute;  
+  left:1px;
+  top:1px;
+  width:1150px;
+  height:515px;
+  background:inherit;
+  background-color:rgba(230, 230, 230, 1);
+  box-sizing:border-box;
+  border-width:5px;
+  border-style:solid;
+  border-color:rgba(102, 102, 153, 1);
+  border-radius:0px;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+  box-shadow:none;
+  font-size:20px;
+}
+/* 提示文本 */
+.tip{
+color:red;
+font-size:12px;
+padding-left:5px;
+padding-top:5px;
+}
+/* 红色星星 */
+p em{
+color:red;
+}
+/* 表格 */
+.bg{
+margin-top:0px;
+margin-left:0px;
+text-align:center;
+font-size:18px;
+}
+
+
+/* 鼠标悬停 */
+.xt:hover{
+background-color:#93A8D2;
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+border-radius:10px;
+}
+</style>
+<script>
+//地址数组
+var Bdz=new Array();
+Bdz[0]="CheckIn_xx.html";
+
+var xxay=false;
+var datanow;
+
+
+//改变内联框架内容
+function Atz(dz)
+{
+    parent.document.getElementById("change").src=dz;
+}
+
+$(function(){
+
+    $.ajaxSetup({
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+    var x = parent.document.getElementById("cid").value;
+    var info={ customerID : x};
+    xxpost("NersingWorker_Info",info);
+    //初始化该内联页面
+    init(datanow);
+	});
+
+function xxpost(x,info){
+			$.ajax({
+					url:x,
+					type:"POST",
+					data:info,
+					async: xxay,
+					success:function(result){
+
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+
+}
+
+function init(datanow)
+{
+    $("#u395_inputName").val(datanow[0].name);
+    $("#u398_input").val(datanow[0].sex);
+    $("#u402_inputNation").val(datanow[0].position);
+    $("#u425_input").val(datanow[0].title);
+    $("#u422_inputAge").val(datanow[0].age);
+
+    $("#u414_input").val(datanow[0].cin_date);
+    $("#u396_inputShenFen").val(datanow[0].number);
+
+    $("#u405_input").val(datanow[0].type);
+    $("#u412_inputDetail").val(datanow[0].phone_num);
+
+
+
+
+}
+</script>
+</head>
+
+<body>
+
+<div id="base" class="">
+	<div id="u392" class="ax_default image" data-label="1图像">
+          <img id="u392_img" class="img " src="../../static/Customer/img/987654321.jpg"/>
+        </div>
+<!--姓名  (矩形) -->
+          <div id="u394" class="ax_default label">
+            <div id="u394_text" class="text ">
+              <p><span>姓&nbsp;名：</span></p>
+            </div>
+          </div>
+
+          <!-- 1姓名 (文本框) -->
+          <div id="u395" class="ax_default text_field" data-label="1姓名">
+            <input id="u395_inputName" readonly="readonly"type="text" value=""/>
+          </div>
+		  
+		   <!-- 性别 (矩形) -->
+          <div id="u399" class="ax_default label">
+            <div id="u399_text" class="text ">
+              <p><span>性&nbsp;别：</span></p>
+            </div>
+          </div>
+        
+		  <!-- 1性别 (下拉列表框) -->
+          <div id="u398" class="ax_default droplist" data-label="1性别">
+
+             <input id="u398_input" readonly="readonly" type="text" value=""/>
+          </div>
+		  
+          <!-- 职务 (矩形) -->
+          <div id="u401" class="ax_default label">
+            <div id="u401_div" class=""></div>
+            <div id="u401_text" class="text ">
+              <p><span>职务：</span></p>
+            </div>
+          </div>
+
+          <!-- 1职务 (文本框) -->
+          <div id="u402" class="ax_default text_field" data-label="1民族">
+            <input id="u402_inputNation" readonly="readonly" type="text" value=""/>
+          </div>
+        
+
+        <!-- 员工号 (矩形) -->
+        <div id="u403" class="ax_default label">
+          <div id="u403_div" class=""></div>
+          <div id="u403_text" class="text ">
+            <p><span>员工号：</span></p>
+          </div>
+        </div>
+		        <!-- 员工号 (文本框) -->
+        <div id="u396" class="ax_default text_field" data-label="1ID">
+          <input id="u396_inputShenFen" readonly="readonly" type="text" value=""/>
+        </div>
+
+        <!-- 员工类别 (矩形) -->
+        <div id="u404" class="ax_default label">
+          <div id="u404_div" class=""></div>
+          <div id="u404_text" class="text ">
+            <p><span>员工类别：</span></p>
+          </div>
+        </div>
+
+        <!-- 员工类别 (下拉列表框) -->
+        <div id="u405" class="ax_default droplist">
+
+          <input id="u405_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+       
+
+        <!-- 手机号码 (矩形) -->
+        <div id="u411" class="ax_default label">
+          <div id="u411_div" class=""></div>
+          <div id="u411_text" class="text ">
+            <p><span>手机号码：</span></p>
+          </div>
+        </div>
+
+        <!-- 手机号码 (文本框) -->
+        <div id="u412" class="ax_default text_field">
+          <input id="u412_inputDetail" readonly="readonly" type="text" value=""/>
+        </div>
+
+        <!-- 入职时间 (矩形) -->
+        <div id="u413" class="ax_default label">
+          <div id="u413_div" class=""></div>
+          <div id="u413_text" class="text ">
+            <p><span>入职时间：</span></p>
+          </div>
+        </div>
+
+        <!-- 年份 (下拉列表框) -->
+        <div id="u414" class="ax_default droplist">
+
+           <input id="u414_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+          <!-- 年龄 (矩形) -->
+          <div id="u421" class="ax_default label">
+            <div id="u421_div" class=""></div>
+            <div id="u421_text" class="text ">
+              <p><span>年&nbsp;龄：</span></p>
+            </div>
+          </div>
+
+          <!-- 1年龄 (文本框) -->
+          <div id="u422" class="ax_default text_field" data-label="1年龄">
+            <input id="u422_inputAge" readonly="readonly" type="text" value=""/>
+          </div>
+        
+
+       <!-- 职称 (矩形) -->
+          <div id="u424" class="ax_default label">
+            <div id="u424_div" class=""></div>
+            <div id="u424_text" class="text ">
+              <p><span>职称：</span></p>
+            </div>
+          </div>
+
+          <!-- 职称选项 (下拉列表框) -->
+          <div id="u425" class="ax_default droplist">
+            <input id="u425_input" readonly="readonly" type="text" value=""/>
+          </div>
+
+</div>
+</body>
+</html>

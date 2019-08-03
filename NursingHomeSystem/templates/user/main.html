@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	  <script type="text/javascript" src="../static/jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>主页面</title>
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+}
+/* 左边导航栏 */
+ul{
+list-style-type:none;
+margin:0px;
+padding:0px;
+}
+/* 导航栏文本 */
+li{
+padding-bottom:1px;
+text-decoration:none;
+display:block;
+background-color:white;
+text-align:center;
+width:154px;
+height:51px;
+line-height:54px;
+color:black;
+font-size:20px;
+border-radius:10px;
+border:1px solid;
+}
+/* 导航栏鼠标悬停/点击 */
+li:hover,li:active{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+/* 左上主标题 */
+.big{
+font-family:'华文琥珀';
+color:white;
+font-size:42px;
+position:absolute;
+left:27px;
+top:27px;
+}
+/* 内联框架 */
+.watch{
+background-color:white;
+width:1180px;
+height:650px;
+position:absolute;
+left:161px;
+top:100px;
+}
+/* 左上主标题背景 */
+.main{
+background-color:#666699;
+width:1348px;
+height:772px;
+}
+/* 导航栏背景 */
+.left{
+position:absolute;
+top:100px;
+}
+.Logout{
+	font-family:'华文琥珀';
+	color:white;
+	font-size:28px;
+	position:absolute;
+	left:1150px;
+	top:27px;
+}
+/**/
+.Details{
+	font-family:'华文琥珀';
+	color:white;
+	font-size:28px;
+	position:absolute;
+	left:1250px;
+	top:27px;
+}
+
+</style>
+<script>
+//地址数组
+var Bdz=new Array();
+Bdz[0]="yhgl.html";
+Bdz[1]="fwgz/khxxcx.html";
+Bdz[2]="customer.html";
+Bdz[3]="tz.html";
+Bdz[4]="ServerContent/";
+Bdz[5]="br_manager/";
+Bdz[6]="sr_manager/";
+Bdz[7]="service/";
+Bdz[8]="FoodCalendar/";
+Bdz[9]="wc.html";
+Bdz[10]="";
+Bdz[11]="";
+Bdz[12]="";
+$(function(){
+	//CSRF认证
+	$.ajaxSetup({
+		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+	});
+});
+//改变内联框架内容
+function Atz(dz)
+{
+document.getElementById("change").src=dz;
+}
+function Logout(){
+	var user = {
+		user:$("#logout").val(),
+	};
+	u = 'logout';
+	info_post(u,user);
+}
+function info_post(Url,info){
+	alert("合格2");
+	$.ajax({
+		url:Url,
+		type:"POST",
+		data:info,
+
+		success:function(result){
+			alert("post接受成功！");
+			window.location.href = "login";
+		},
+		error:function(){
+				alert("post接受失败");
+			}
+		});
+}
+</script>
+</head>
+
+<body>
+<!--左上主标题-->
+<div id="head" class="main">
+<p class="big">上实瑞慈颐养中心管理系统</p>
+	<button class="Logout" id="logout" onclick="Logout()" value={{User}}> 注销 </button>
+
+	<button class="Details" id ="details" onclick="" value={{User}}> 详细 </button>
+<!--导航栏-->
+<div id="daohang" class="left">
+<ul>
+	<li><p onclick="Atz(Bdz[5])">床位管理</p></li>
+	<li><p onclick="Atz(Bdz[2])">入住登记</p></li>
+	<li><p onclick="Atz(Bdz[9])">外出登记</p></li>
+	<li><p onclick="Atz(Bdz[3])">退住登记</p></li>
+	<li><p>护理记录</p></li>
+	<li><p onclick="Atz(Bdz[4])">护理内容</p></li>
+	<li><p onclick="Atz(Bdz[6])">护理级别管理</p></li>
+	<li><p onclick="Atz(Bdz[8])">膳食日历</p></li>
+	<li><p>膳食管理</p></li>
+	<li><p onclick="Atz(Bdz[0])">用户管理</p></li>
+	<li><p onclick="Atz(Bdz[1])">服务关注</p></li>
+	<li><p onclick="Atz(Bdz[7])">设置服务对象</p></li>
+</ul>
+</div>
+<!--内联框架-->
+<div class="watch">
+<iframe id="change" src="welcome.html" width="1180px" height="650px" >
+</iframe>
+	<input id="temp" type="hidden">
+	<!--这里等合的时候要记录登录用户的账号-->
+	<input id="username" value="2019007106" type="hidden">
+	<input id="item" type="hidden">
+	<input id="temp2" type="hidden">
+</div>
+</div>
+</body>
+</html>

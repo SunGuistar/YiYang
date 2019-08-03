@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户信息查询修改页面</title>
+</head>
+<body>
+    <form action="/modify/" method="post">
+        {% csrf_token %}
+        <p>需要修改的员工ID</p>
+        <input type="text" name="staffID">
+        <p>目标姓名</p>
+        <input type="text" name="name">
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>

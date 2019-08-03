@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<script type="text/javascript" src="../../static/check_out/js/jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>客户详细信息</title>
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.back{
+background-color:#666699;
+width:1104px;
+height:55px;
+position:absolute;
+left:15px;
+top:40px;
+line-height:55px;
+padding-left:23px;
+}
+/* 主标题文本 */
+.head{
+color:white;
+font-weight:900;
+font-size:30px;
+text-align:center;
+}
+/* 主背景 */
+.back2{
+background-color:#E6E6E6;
+width:1127px;
+height:500px;
+border-color:#666699;
+border-style:solid;
+border-width:5px;
+box-sizing:border-box;
+position:absolute;
+left:15px;
+top:95px;
+}
+/* 提示文本 */
+.tip{
+color:red;
+font-size:13px;
+padding-left:23px;
+padding-top:15px;
+}
+/* 表格 */
+.bg{
+margin-top:10px;
+margin-left:140px;
+text-align:center;
+font-size:18px;
+}
+/* 内联框架 */
+.watch{
+background-color:#E6E6E6;
+width:1120px;
+height:330px;
+position:absolute;
+left:0px;
+top:160px;
+}
+
+/* 中介线 */
+.line{
+width:1122px;
+height:5px;
+position:absolute;
+left:0px;
+top:120px;
+background-color:#666699
+}
+/* 基本信息按钮 左一 */
+.basic{
+background-color:#666699;
+width:280px;
+height:40px;
+position:absolute;
+left:0px;
+top:120px;
+text-align:center;
+color:white;
+font-size:20px;
+line-height:40px;
+}
+/* 床位信息按钮 左二 */
+.Bed{
+background-color:#666699;
+width:280px;
+height:40px;
+position:absolute;
+left:280px;
+top:120px;
+text-align:center;
+color:white;
+font-size:20px;
+line-height:40px;
+}
+/* 套餐信息按钮 左三 */
+.SetMeal{
+background-color:#666699;
+width:280px;
+height:40px;
+position:absolute;
+left:560px;
+top:120px;
+text-align:center;
+color:white;
+font-size:20px;
+line-height:40px;
+}
+/* 护工信息按钮 左四 */
+.NersingWorker{
+background-color:#666699;
+width:280px;
+height:40px;
+position:absolute;
+left:840px;
+top:120px;
+text-align:center;
+color:white;
+font-size:20px;
+line-height:40px;
+}
+
+/* 鼠标悬停 */
+.xt:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+/* 返回按钮 */
+.fh{
+background-color:#666699;
+width:200px;
+height:65px;
+position:absolute;
+right:150px;
+top:30px;
+text-align:center;
+color:white;
+font-size:20px;
+line-height:65px;
+}
+</style>
+<script>
+var datanow=[
+	{"name":"","sex":"","customerID":""},
+];
+
+//post同步还是异步,默认同步，异步状态下不能给外界变量赋值
+var xxay=false;
+//地址数组
+var Bdz=new Array();
+var Adz=new Array();
+
+Adz[0]="CheckIn_xx.html";
+
+Bdz[0]="CheckIn_bl_sg.html";
+Bdz[1]="BedsInfo.html";
+Bdz[2]="NersingWorker Info.html";
+Bdz[3]="SetMeal.html";
+//改变内联框架内容
+function Atz(dz)
+{
+	parent.document.getElementById("change").src=dz;
+}
+function Btz(dz)
+{
+	document.getElementById("change").src=dz;
+}
+
+$(function(){
+    $.ajaxSetup({
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+    var x = parent.document.getElementById("temp").value;
+
+    var info={ customerID : x};
+    xxpost("customer_show",info);
+    //初始化该内联页面
+    init(datanow);
+	});
+
+
+function xxpost(x,info){
+			$.ajax({
+					url:x,
+					type:"POST",
+					data:info,
+					async: xxay,
+					success:function(result){
+
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+}
+
+function init(datanow)
+{
+	$("#cname").val(datanow[0].name);
+    $("#csex").val(datanow[0].sex);
+    $("#cid").val(datanow[0].customerID);
+}
+</script>
+</head>
+
+<body>
+<!--主标题-->
+<div class="back">
+	<p class="head">
+		客户详细信息
+	</p>
+</div>
+<!--主体-->
+<div class="back2">
+	<!--图片旁边的信息-->
+	<!--表格-->
+	<div>
+		<table  class="bg">
+			<tr height="30px">
+				<td width="100px">
+					姓名
+				</td>
+				<td width="120px">
+
+						<input id="cname" type="text" style="width:150px;height:25px">
+
+				</td>
+			</tr>
+
+			<tr height="30px">
+				<td width="100px">
+					客户ID
+				</td>
+				<td width="120px">
+
+						<input  id="cid" type="text"  style="width:150px;height:25px" >
+
+				</td>
+			</tr>
+
+			<tr height="30px">
+				<td width="100px">
+					性别
+				</td>
+				<td width="120px">
+
+						<input id="csex" type="text"  style="width:150px;height:25px">
+
+				</td>
+			</tr>
+			<!--导入图片-->
+			<p>
+				<img src="../../static/Customer/img/123456789.jpg" width="140px" height="120px" style="position:absolute;left:0px;top:0px;">
+			</p>
+		</table >
+	</div>
+	<!--中介线-->
+	<div class="line">
+	</div>
+	<!--内联框架-->
+	<div class="watch">
+		<iframe id="change" src="CheckIn_bl_sg.html" width="1118px" height="330px" >
+		</iframe>
+	</div>
+
+	<!--按钮模块-->
+	<div class="basic xt">
+		<p onclick="Btz(Bdz[0])">
+			基本信息
+		</p>
+	</div>
+	<div class="Bed xt">
+		<p onclick="Btz(Bdz[1])">
+			床位信息
+
+	</div>
+	<div class="SetMeal xt">
+		<p onclick="Btz(Bdz[3])">
+			套餐信息
+		</p>
+	</div>
+
+	<div class="NersingWorker xt">
+		<p onclick="Btz(Bdz[2])">
+			护工信息
+		</p>
+	</div>
+
+	<div class="fh xt">
+		<p onclick="Atz(Adz[0])">
+			返回
+		</p>
+	</div>
+
+</div>
+
+</body>
+</html>

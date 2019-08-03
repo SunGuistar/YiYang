@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>修改护理类型页面</title>
+</head>
+<body>
+    <form action="/modify_nursing_type/" method="post">
+        {% csrf_token %}
+        <p>护理类型ID</p>
+        <input type="text" name="type_id" value=>
+        <p>护理类型名称</p>
+        <input type="text" name="name">
+        <p>护理类型名称</p>
+        <input type="text" name="name">
+        <p>护理类型描述</p>
+        <input type="text" name="details">
+        <input type="submit" value="查询并修改">
+    </form>
+
+    <table border="1">
+        {% for info in type_list %}
+        <tr>
+            <td width="200">{{ info.typeID }}</td>
+            <td width="200">{{ info.name }}</td>
+            <td width="200">{{ info.details }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+</body>
+</html>

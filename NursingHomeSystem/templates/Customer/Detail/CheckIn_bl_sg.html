@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>新增客户基本信息</title>
+
+    <link href="../../static/Customer/css/styles_CheckIn_bl_sg1.css" type="text/css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="../../static/check_out/js/jquery.js" ></script>
+
+  
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.back{
+background-color:#666699;
+width:1100px;
+height:55px;
+position:absolute;
+left:15px;
+top:15px;
+line-height:55px;
+padding-left:23px;
+
+ 
+}
+/* 主标题"客户基本信息填写"文本 */
+.head{
+color:white;
+font-weight:900;
+font-size:30px;
+text-align:center;
+}
+/* 主背景 */
+.back2{
+  border-width:0px;
+  position:absolute;  
+  left:0px;
+  top:0px;
+  width:0px;
+  height:515px;
+  background:inherit;
+  background-color:rgba(230, 230, 230, 1);
+  box-sizing:border-box;
+  border-width:5px;
+  font-size:20px;
+}
+/* 提示文本 */
+.tip{
+color:red;
+font-size:12px;
+padding-left:5px;
+padding-top:5px;
+}
+/* 红色星星 */
+p em{
+color:red;
+}
+/* 表格 */
+.bg{
+margin-top:0px;
+margin-left:0px;
+text-align:center;
+font-size:18px;
+}
+
+
+/* 鼠标悬停 */
+.xt:hover{
+background-color:#93A8D2;
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+border-radius:10px;
+}
+
+</style>
+<script>
+var datanow=[
+	{"name":"赵1","sex":"男","age":"4","nation":"朝鲜","btype":"1","birthday":"退住","ID_number":"140121199602154672",
+	"province":"","city":"","area":"","address":"",
+	"marriage":"","type":"","height":"","weight":"",
+	"phone_num1":"","phone_num2":"",},
+];
+var databg;
+//地址数组
+var Bdz=new Array();
+Bdz[0]="CheckIn_xx.html";
+
+//post同步还是异步,默认同步，异步状态下不能给外界变量赋值
+var xxay=false;
+//改变内联框架内容
+function Atz(dz)
+{
+    parent.document.getElementById("change").src=dz;
+}
+
+$(function(){
+
+    $.ajaxSetup({
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+    var x = parent.document.getElementById("cid").value;
+    var info={ customerID : x};
+    xxpost("CheckIn_bl_sg",info);
+    //初始化该内联页面
+    init(datanow);
+	});
+function xxpost(x,info){
+			$.ajax({
+					url:x,
+					type:"POST",
+					data:info,
+					async: xxay,
+					success:function(result){
+
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+
+}
+
+function init(datanow)
+{
+    $("#u395_inputName").val(datanow[0].name);
+    $("#u398_input").val(datanow[0].sex);
+    $("#u422_inputAge").val(datanow[0].age);
+    $("#u402_inputNation").val(datanow[0].nation);
+    $("#u425_input").val(datanow[0].btype);
+
+
+    $("#u414_input").val(datanow[0].birthday);
+
+    $("#u396_inputShenFen").val(datanow[0].ID_number);
+
+    $("#u405_input").val(datanow[0].province);
+    $("#u406_input").val(datanow[0].city);
+    $("#u407_input").val(datanow[0].area);
+    $("#u412_inputDetail").val(datanow[0].address);
+
+    $("#u427_inputHunYin").val(datanow[0].marriage);
+    $("#u435_inputType").val(datanow[0].type);
+    $("#u429_input").val(datanow[0].height);
+    $("#u432_input").val(datanow[0].weight);
+
+    $("#u437_input").val(datanow[0].phone_num1);
+    $("#u439_input").val(datanow[0].phone_num2);
+
+}
+
+</script>
+</head>
+
+<body>
+<!--主标题
+<div id="u442" class="ax_default box_1" data-label="客户基本信息填写表头">
+        <div id="u442_div" class=""></div>
+        <div id="u442_text" class="text ">
+          <p><span>客户基本信息填写</span></p>
+        </div>
+      </div>-->
+<!--主体-->
+<div class="back2">
+
+</div>
+
+
+
+<!--表格-->
+<div id="base" class="">
+	<div id="u392" class="ax_default image" data-label="1图像">
+          <img id="u392_img" class="img " src="../../static/Customer/img/123456789.jpg"/>
+        </div>
+<!--姓名  (矩形) -->
+          <div id="u394" class="ax_default label">
+            <div id="u394_text" class="text ">
+              <p><span>姓&nbsp;名：</span></p>
+            </div>
+          </div>
+
+          <!-- 1姓名 (文本框) -->
+          <div id="u395" class="ax_default text_field" data-label="1姓名">
+            <input id="u395_inputName" readonly="readonly" type="text" />
+          </div>
+		  
+<!-- 性别 (矩形) -->
+          <div id="u399" class="ax_default label">
+            <div id="u399_text" class="text ">
+              <p><span>性&nbsp;别：</span></p>
+            </div>
+          </div>
+        
+		  <!-- 1性别 (下拉列表框) -->
+          <div id="u398" class="ax_default droplist" data-label="1性别">
+               <input id="u398_input" readonly="readonly" type="text" />
+          </div>
+
+ <!-- 民族 (矩形) -->
+          <div id="u401" class="ax_default label">
+            <div id="u401_div" class=""></div>
+            <div id="u401_text" class="text ">
+              <p><span>民&nbsp;族：</span></p>
+            </div>
+          </div>
+
+          <!-- 1民族 (文本框) -->
+          <div id="u402" class="ax_default text_field" data-label="1民族">
+            <input id="u402_inputNation" readonly="readonly" type="text" value=""/>
+          </div>
+ <!-- 年龄 (矩形) -->
+          <div id="u421" class="ax_default label">
+            <div id="u421_div" class=""></div>
+            <div id="u421_text" class="text ">
+              <p><span>年&nbsp;龄：</span></p>
+            </div>
+          </div>
+
+          <!-- 1年龄 (文本框) -->
+          <div id="u422" class="ax_default text_field" data-label="1年龄">
+            <input id="u422_inputAge" readonly="readonly" type="text" value=""/>
+          </div>
+<!-- 血型 (矩形) -->
+          <div id="u424" class="ax_default label">
+            <div id="u424_div" class=""></div>
+            <div id="u424_text" class="text ">
+              <p><span>血&nbsp;型：</span></p>
+            </div>
+          </div>
+
+          <!-- 血型选项 (下拉列表框) -->
+          <div id="u425" class="ax_default droplist">
+              <input id="u425_input" readonly="readonly" type="text" value=""/>
+          </div>
+
+<!-- 出生日期 (矩形) -->
+        <div id="u413" class="ax_default label">
+          <div id="u413_div" class=""></div>
+          <div id="u413_text" class="text ">
+            <p><span>出生日期：</span></p>
+          </div>
+        </div>
+
+         <!--年份 (下拉列表框)-->
+        <div id="u414" class="ax_default droplist">
+             <input id="u414_input" type="text" style="width:292px;height:35px">
+        </div>
+
+
+<!-- 身份证 (矩形) -->
+        <div id="u403" class="ax_default label">
+          <div id="u403_div" class=""></div>
+          <div id="u403_text" class="text ">
+            <p><span>身份证：</span></p>
+          </div>
+        </div>
+        <!-- 身份证 (文本框) -->
+        <div id="u396" class="ax_default text_field" data-label="1ID">
+          <input id="u396_inputShenFen" type="text" readonly="readonly" value=""/>
+        </div>
+
+<!-- 籍贯 (矩形) -->
+        <div id="u404" class="ax_default label">
+          <div id="u404_div" class=""></div>
+          <div id="u404_text" class="text ">
+            <p><span>籍&nbsp;贯：</span></p>
+          </div>
+        </div>
+
+        <!-- 省 (下拉列表框) -->
+        <div id="u405" class="ax_default droplist">
+
+            <input id="u405_input" type="text" readonly="readonly" value=""/>
+        </div>
+
+        <!-- 市 (下拉列表框) -->
+        <div id="u406" class="ax_default droplist">
+
+             <input id="u406_input" type="text" readonly="readonly" value=""/>
+        </div>
+
+        <!-- 区 (下拉列表框) -->
+        <div id="u407" class="ax_default droplist">
+             <input id="u407_input" type="text" readonly="readonly" value=""/>
+        </div>
+
+<!-- 省 (矩形) -->
+        <div id="u408" class="ax_default label">
+          <div id="u408_div" class=""></div>
+          <div id="u408_text" class="text ">
+            <p><span>省</span></p>
+          </div>
+        </div>
+
+<!-- 市 (矩形) -->
+        <div id="u409" class="ax_default label">
+          <div id="u409_div" class=""></div>
+          <div id="u409_text" class="text ">
+            <p><span>市</span></p>
+          </div>
+        </div>
+
+<!-- 县/区 (矩形) -->
+        <div id="u410" class="ax_default label">
+          <div id="u410_div" class=""></div>
+          <div id="u410_text" class="text ">
+            <p><span>县/区</span></p>
+          </div>
+        </div>
+
+<!-- 详细地址 (矩形) -->
+        <div id="u411" class="ax_default label">
+          <div id="u411_div" class=""></div>
+          <div id="u411_text" class="text ">
+            <p><span>详细地址：</span></p>
+          </div>
+        </div>
+
+        <!-- 详细地址 (文本框) -->
+        <div id="u412" class="ax_default text_field">
+          <input id="u412_inputDetail" readonly="readonly" type="text" value=""/>
+        </div>
+
+
+
+
+<!-- 婚姻状况 (矩形) -->
+        <div id="u426" class="ax_default label">
+          <div id="u426_div" class=""></div>
+          <div id="u426_text" class="text ">
+            <p><span>婚姻状况：</span></p>
+          </div>
+        </div>
+
+        <!-- 婚姻状况选项 (下拉列表框) -->
+        <div id="u427" class="ax_default droplist">
+
+            <input id="u427_inputHunYin" readonly="readonly" type="text" value=""/>
+        </div>
+<!-- 老人类型： (矩形) -->
+        <div id="u434" class="ax_default label">
+          <div id="u434_div" class=""></div>
+          <div id="u434_text" class="text ">
+            <p><span>老人类型：</span></p>
+          </div>
+        </div>
+
+        <!-- 老人类型选项 (下拉列表框) -->
+        <div id="u435" class="ax_default droplist">
+            <input id="u435_inputType" readonly="readonly" type="text" value=""/>
+        </div>
+
+<!-- 身高 (矩形) -->
+        <div id="u428" class="ax_default label">
+          <div id="u428_div" class=""></div>
+          <div id="u428_text" class="text ">
+            <p><span>身高：</span></p>
+          </div>
+        </div>
+
+        <!-- 身高 (文本框) -->
+        <div id="u429" class="ax_default text_field">
+          <input id="u429_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+<!-- cm (矩形) -->
+        <div id="u430" class="ax_default label">
+          <div id="u430_div" class=""></div>
+          <div id="u430_text" class="text ">
+            <p><span>cm</span></p>
+          </div>
+        </div>
+
+<!-- 体重： (矩形) -->
+        <div id="u431" class="ax_default label">
+          <div id="u431_div" class=""></div>
+          <div id="u431_text" class="text ">
+            <p><span>体重：</span></p>
+          </div>
+        </div>
+
+        <!-- 体重： (文本框) -->
+        <div id="u432" class="ax_default text_field">
+          <input id="u432_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+<!-- kg (矩形) -->
+        <div id="u433" class="ax_default label">
+          <div id="u433_div" class=""></div>
+          <div id="u433_text" class="text ">
+            <p><span>kg</span></p>
+          </div>
+        </div>
+
+
+<!-- 联系电话1： (矩形) -->
+        <div id="u436" class="ax_default label">
+          <div id="u436_div" class=""></div>
+          <div id="u436_text" class="text ">
+            <p><span>联系电话1：</span></p>
+          </div>
+        </div>
+
+        <!-- 联系电话1： (文本框) -->
+        <div id="u437" class="ax_default text_field">
+          <input id="u437_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+<!-- 联系电话2： (矩形) -->
+        <div id="u438" class="ax_default label">
+          <div id="u438_div" class=""></div>
+          <div id="u438_text" class="text ">
+            <p><span>联系电话2：</span></p>
+          </div>
+        </div>
+
+        <!-- 联系电话2： (文本框) -->
+        <div id="u439" class="ax_default text_field">
+          <input id="u439_input" readonly="readonly" type="text" value=""/>
+        </div>
+
+</div>
+
+</body>
+</html>

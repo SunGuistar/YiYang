@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户信息查询展示页面</title>
+</head>
+<body>
+    <form action="/search/" method="post">
+        {% csrf_token %}
+        <p>员工ID</p>
+        <input type="text" name="staffID">
+        <p>姓名</p>
+        <input type="text" name="name">
+        <p>性别</p>
+        <input type="text" name="sex">
+        <p>年龄</p>
+        <input type="text" name="age">
+        <p>年龄下限</p>
+        <input type="text" name="minAge">
+        <p>年龄上限</p>
+        <input type="text" name="maxAge">
+        <p>员工类型</p>
+        <input type="text" name="category">
+        <p>职务</p>
+        <input type="text" name="position">
+        <p>职称</p>
+        <input type="text" name="jobTitle">
+        <p>手机号码</p>
+        <input type="text" name="phoneNumber">
+
+        <input type="submit" value="提交">
+    </form>
+
+
+<table border="1" style="margin:200px;">
+        {% for staff in staff_list %}
+            <tr color="red">
+                <td width="200px">{{ staff.staffID }}</td>
+                <td width="200px">{{ staff.name }}</td>
+                <td width="200px">{{ staff.age }}</td>
+                <td width="200px">{{ staff.birthday }}</td>
+                <td width="200px">{{ staff.category }}</td>
+                <td width="200px">{{ staff.employeeDate }}</td>
+                <td width="200px">{{ staff.position }}</td>
+                <td width="200px">{{ staff.jobTitle }}</td>
+                <td width="200px">{{ staff.phoneNumber }}</td>
+                <td width="200px">{{ staff.introduction }}</td>
+                <td width="200px">{{ staff.remarks }}</td>
+            </tr>
+        {% endfor %}
+</table>
+
+</body>
+</html>

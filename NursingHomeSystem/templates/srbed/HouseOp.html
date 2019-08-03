@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+
+<div  style="display: none;">
+<!--预处理post_list列表-->
+{% for post in post_list %}
+	<h1 id = "RoomId-{{forloop.counter}}">{{post.RoomId}}</h1>
+	<h1 id = "RoomArea-{{forloop.counter}}">{{post.RoomArea}}</h1>
+	<h1 id = "RoomState-{{forloop.counter}}">{{post.RoomState}}</h1>
+	<h1 id = "RoomFunction-{{forloop.counter}}">{{post.RoomFunction}}</h1>
+	<h1 id = "RoomBedNum-{{forloop.counter}}">{{post.RoomBedNum}}</h1>
+	<h1 id = "RoomRank-{{forloop.counter}}">{{post.RoomRank}}</h1>
+{% endfor %}
+	<h1 id = "len">{{length}}</h1>
+</div>
+
+<head>
+	<script type="text/javascript" src="../../../static/check_out/js/jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>房间管理</title>
+
+<style>
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.head1{
+background-color:#666699;
+width:1170px;
+height:60px;
+position:absolute;
+left:5px;
+top:5px;
+}
+/* 主标题文本 */
+.head2{
+color:white;
+font-size:30px;
+line-height:60px;
+font-weight:900;
+text-align:center;
+}
+/* 查询模块背景1 */
+.table1{
+background-color:#666699;
+width:840px;
+height:55px;
+position:absolute;
+left:15px;
+top:86px;
+font-size:20px;
+color:white;
+overflow:hidden;
+text-align:center;
+}
+/* 查询按钮 */
+.search2{
+background-color:#666699;
+width:80px;
+height:55px;
+position:absolute;
+left:855px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+border:none;
+}
+/* 鼠标悬停 */
+.touch:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+background-color:#93A8D2;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+/* 新增按钮 */
+.goto{
+background-color:#666699;
+width:80px;
+height:55px;
+position:absolute;
+left:935px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+}
+/* 排序下拉框 */
+.table2{
+background-color:#666699;
+width:160px;
+position:absolute;
+left:1005px;
+top:86px;
+font-size:20px;
+text-align:center;
+line-height:55px;
+height:55px;
+}
+/* 主要表格 */
+table.one{
+padding:0px;
+margin:0px;
+border-collapse:collapse;
+width:1150px;
+text-align:center;
+position:absolute;
+left:15px;
+top:141px;
+font-size:20px;
+overflow: hidden; 
+}
+table.one thead tr th{
+background-color:#666699;
+color:white;
+height:55px;
+}
+table.one tbody tr td{
+background-color:white;
+color:black;
+height:55px;
+}
+table tbody tr td input[type="text"]{
+width:100px;
+}
+/* 信息显示模块 */
+.msg{
+background-color:#666699;
+position:absolute;
+left:162px;
+top:490px;
+font-size:20px;
+text-align:center;
+color:white;
+}
+/* 翻页模块 */
+ul.one{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:315px;
+top:490px;
+}
+ul.one li
+{
+color:white;
+float:left;
+width:85px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+}
+
+
+/* 批量处理模块 */
+ul.two{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:15px;
+top:490px;
+}
+ul.two li
+{
+float:left;
+width:150px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+display:inline-block;
+color:white;
+}
+
+li p:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+background-color:#93A8D2;
+cursor:pointer;
+}
+/*操作按钮*/
+a{
+padding-left:10px;
+text-align:center;
+line-height:55px;
+font-size:20px;
+display:inline-block;
+}
+a:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+background-color:#93A8D2;
+cursor:pointer;
+}
+</style>
+
+<script>
+//批量删除
+function deleteall(){
+	var items = document.getElementsByName("zhong");
+	for (i = 0; i < items.length; i++) {
+		if (items[i].checked) {
+			alert("编号"+items[i].value+"被删除！");
+			document.getElementById("delete-"+items[i].value).click();
+		}
+	}
+}
+
+//地址数组
+var Bdz=new Array();
+Bdz[0]="tz.html";
+Bdz[1]="tz_bl.html";
+Bdz[2]="br_manager/room_manage/room_add/";
+//不可修改的表格数据存储
+
+//获取数据库后台数据
+var slen = document.getElementById("len").innerHTML;
+var len = parseInt(slen);
+
+var datanow = [
+];
+
+//批量显示数据库数据
+for (var i=1; i<=len; i++)
+{
+	var roomid = document.getElementById("RoomId-" + i.toString()).innerHTML;
+	var roomarea = document.getElementById("RoomArea-" + i.toString()).innerHTML;
+	var roomstate= document.getElementById("RoomState-" + i.toString()).innerHTML;
+	var roomfunction= document.getElementById("RoomFunction-" + i.toString()).innerHTML;
+	var roombednum= document.getElementById("RoomBedNum-" + i.toString()).innerHTML;
+	var roomrank= document.getElementById("RoomRank-" + i.toString()).innerHTML;
+	datanow[i-1] = {"id":roomid,"area":roomarea,"state":roomstate,"purpose":roomfunction,"num":roombednum,"rank":roomrank};
+}
+
+//mybg原本表格集合
+var pageshow1=new Array();
+//mybg可操作的表格集合
+var pageshow=new Array();
+//可操作的表格数据
+var databg=datanow.concat();
+//后端传来的信息数
+var len=databg.length;
+//页数
+var pageall=Math.ceil(len/5);
+//当前页数
+var pagenow=0;
+//mybg可操作的显示
+var pnow;
+var pall;
+var count;
+
+		$(function(){
+			
+			//注册表格操作点击事件
+			registerClick();
+			//批量处理按钮点击事件
+			
+			//初始化显示数据
+			databg=datanow.concat();
+			len=databg.length;
+			pageall=Math.ceil(len/5);
+			pnow=pagenow;
+			pall=pageall;
+			count=len;
+			//初始化表格数据
+			addRow();
+			//初始化页数,当前页数，信息数
+			$("#mess").text(len);
+			$("#allpage").text(pageall);
+			if(pageall>0){
+				pagenow=1;
+				pnow=pagenow;
+				$("#nowpage").text(pagenow);
+			}
+			//初始化显示
+			var $table=$('#mybg');
+			$table.find('tbody tr').hide();
+			for(var i=0,j=0;i<pageall;i++){
+				pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+				j=j+5;
+			}
+			pageshow=pageshow1.concat();
+			pageshow[0].show();
+			//全选框
+			$("#allcheck").change(function(){
+				var flage=$(this).is(":checked");
+				$("input[type=checkbox]").each(function(){
+					$(this).prop("checked",flage);
+				})
+			});
+		});
+		//初始化表格数据
+		function addRow(){
+			var i=0;
+			for(i;i<databg.length;i++){
+				var str = "<tr><td><input type='checkbox' value='"+databg[i].id+"' name='zhong'></td><td>"+databg[i].id+"</td><td>"+databg[i].area+"</td><td>"+databg[i].state+"</td><td>"+databg[i].purpose+"</td><td>"+databg[i].num+"</td><td>"+databg[i].rank+"</td><td><a href='room/"+databg[i].id+"'>修改</a><a id='delete-"+databg[i].id+"' href='?pk="+databg[i].id+"'>删除</a></td></tr>";
+				$("#mybg tbody").append(str);
+				}
+			registerClick();
+		}
+		//改变内联框架内容
+		function Atz(dz){
+			parent.document.getElementById("change").src=dz;
+		}
+		//注册表格操作点击事件
+		function registerClick(){
+			//防止重复注册事件：.off("click")
+			$("#mybg tbody tr td a").off("click").on("click", function(){
+				var text = $(this).text();
+				switch(text){
+					case "修改":
+						updateRow($(this));
+						break;
+					case "保存":
+						saveRow($(this));
+						break;
+					case "删除":
+						deleteRow($(this),0);
+						break;
+					case "审核":
+						deleteRow($(this),1);
+						break;
+				}
+			});
+		}
+		
+		
+		//修改行
+		/*
+		function updateRow(t){
+			var names = new Array();
+			names[0] = "Id";
+			names[0] = "Area";
+			names[0] = "State";
+			names[0] = "Function";
+			names[0] = "BedNum";
+			names[0] = "Rank";
+			$(t).text("保存");
+			var tr = $(t).parent().parent();
+			var tds = $(tr).children();
+			for (var i = 0; i < tds.length; i++) {
+				if(i>0 && i<tds.length-1){
+					var td = tds[i];
+					var text = $(td).text();
+					$(td).html("<input type='text' name='"+names[i]+"' value='"+text+"'>");
+				}
+			}
+		}
+		
+		//保存行
+		function saveRow(t){
+			$(t).text("修改");
+			var tr = $(t).parent().parent();
+			var tds = $(tr).children();
+			for (var i = 0; i < tds.length; i++) {
+				if(i>0 && i<tds.length-1){
+					var td = tds[i];
+					var text = $(td).children("input").val();
+					$(td).html(text);
+				}
+			}
+		}*/
+		//载入翻页
+		function xxpage(x){
+		
+			//首页
+			if(x==0){
+				pageshow[pnow-1].hide();
+				pnow=1;
+				pageshow[0].show();
+				$("#nowpage").text(pnow);
+			}
+			//上一页
+			else if(x==1){
+				if(pnow-1>0){
+					pageshow[pnow-1].hide();
+					pnow=pnow-1;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+			//下一页
+			else if(x==2){
+				if(pnow<pageshow.length){
+					pageshow[pnow-1].hide();
+					pnow=pnow+1;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+			//尾页
+			else if(x==3){
+				pageshow[pnow-1].hide();
+				pnow=pall;
+				pageshow[pnow-1].show();
+				$("#nowpage").text(pnow);
+			}
+			//跳转
+			else if(x==4){
+				var x=$("#pagetz").val();
+				if(!isNaN(x)&&x<=pageshow.length&&x>0){
+					pageshow[pnow-1].hide();
+					pnow=x;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+		}
+		//查找
+		function xxsearch(){
+			var x1=$("#search_id").val();
+			var x2=$("#search_area").val();
+			
+			//当没有查询内容时还原
+			if(x1==""&&x2==""&&x3==""&&x4==""&&x5==""&&x6==""){
+				pnow=pagenow;
+				pall=pageall;
+				count=len;
+				pageshow=pageshow1.concat();
+				$("#mybg").find('tbody tr').hide();
+				pageshow[0].show();
+				$("#nowpage").text(pnow);
+				$("#allpage").text(pall);
+				$("#mess").text(count);
+			}
+			else{
+					$('#mybg').find('tbody tr').show();
+					$('#mybg tbody tr').find('td:eq(1)').not(":contains('"+x1+"')").parent().hide();
+					$('#mybg tbody tr').find('td:eq(2)').not(":contains('"+x2+"')").parent().hide();
+					
+					//查询后信息数
+					var search_count=$('#mybg tbody tr:visible').length;
+					//查询后页数
+					var search_pageall=Math.ceil(search_count/5);
+					//查询后当前页数
+					var search_pagenow=0;
+					if(search_count>0){
+						search_pagenow=1;
+					}
+					pnow=search_pagenow;
+					pall=search_pageall;
+					count=search_count;
+					
+					$("#nowpage").text(pnow);
+					$("#allpage").text(pall);
+					$("#mess").text(count);
+					//查询后表格数据数组
+					var searchshow=new Array();
+					for(var i=0,j=0;i<pall;i++){
+						searchshow[i]=$('#mybg tbody tr:visible').slice(j,j+5);
+						j=j+5;
+					}
+					$('#mybg').find('tbody tr').hide();
+					
+					pageshow=searchshow.concat();
+					pageshow[0].show();
+				}
+		}
+		//排序
+		function xxpx(){
+			if($("#pxval").val()==1){
+				
+				//清除数据
+				$('#mybg tbody').empty("");
+				//排序数据数组
+				var pxnow=new Array();
+				pxnow=databg.concat();
+				//排序数据数组排序
+				for(var i=0;i<pxnow.length;i++){
+					for(var j=i;j<pxnow.length;j++){
+						if(parseInt(pxnow[i].id)>parseInt(pxnow[j].id)){
+							var temp=pxnow[i];
+							pxnow[i]=pxnow[j];
+							pxnow[j]=temp;
+						}
+					}
+				}
+				databg=pxnow.concat();
+				addRow();
+				//初始化显示
+				var pxshow=new Array();
+				var $table=$('#mybg');
+				$table.find('tbody tr').hide();
+				for(var i=0,j=0;i<pageall;i++){
+					pxshow[i]=$table.find('tbody tr').slice(j,j+5);
+					j=j+5;
+				}
+				//$("#mybg").find('tbody tr').hide();
+				pageshow=pxshow.concat();
+				pageshow[0].show();
+			}
+			else{
+				//清除数据
+				$('#mybg tbody').empty("");
+				databg=datanow.concat();
+				addRow();
+				//初始化显示
+				var $table=$('#mybg');
+				$table.find('tbody tr').hide();
+				for(var i=0,j=0;i<pageall;i++){
+					pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+					j=j+5;
+				}
+				$("#mybg").find('tbody tr').hide();
+				pageshow=pageshow1.concat();
+				pageshow[0].show();
+			}	
+			//排序后查找(查询后排序/只输入文本而未查询后排序)
+			//xxsearch();
+		}
+		//删除数组元素
+		function removeV(arr,val){
+			for(var i=0;i<arr.length;i++){
+				if(arr[i].id==val){
+					arr.splice(i,1);
+					break;
+				}
+			}
+		}
+		//表格，部分完全初始化
+		function restartbg(){
+			//清除数据
+			$('#mybg tbody').empty("");
+			//重新初始化表格
+			databg=datanow.concat();
+			addRow();
+			len=databg.length;
+			pageall=Math.ceil(len/5);
+			pagenow=0;
+			//初始化可操作显示数据
+			pnow=pagenow;
+			pall=pageall;
+			count=len;
+			if(pageall>0){
+				pagenow=1;
+				pnow=pagenow;
+			}
+			$("#mess").text(count);
+			$("#allpage").text(pall);
+			$("#nowpage").text(pnow);
+			//初始化表格显示数组
+			var $table=$('#mybg');
+			$table.find('tbody tr').hide();
+			for(var i=0,j=0;i<pageall;i++){
+				pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+				j=j+5;
+			}
+			pageshow=pageshow1.concat();
+			pageshow[0].show();
+		}
+</script>
+</head>
+
+<body>
+
+<!--主标题-->
+<div class="head1">
+<p class="head2">
+房间管理
+</p>
+</div>
+
+<!--提交表单-->
+<form action="" method="post">
+{% csrf_token %} <!-- 用于防止出错-->
+<!--查询模块-->
+<div>
+<table class="table1" >
+<tr >
+<!--房间号查询-->
+<td width="150px" >
+房间号: <input type="text" style="width:60px;" id="search_id" name="RoomId">
+</td>
+<!--房间面积查询-->
+<td width="160px" >
+房间状态: <input type="text" id="search_area" style="width:60px;" name="RoomState">
+</td>
+<!--床位数量查询-->
+<td width="160px" >
+房间用途: <input type="text" id="search_num" style="width:60px;" name="RoomFunction">
+</td>
+<td width="170px" >
+床位数量: <input type="text" id="search_state" style="width:60px;" name="RoomBedNum">
+</td>
+<td width="170px" >
+房间等级: <input type="text" id="search_rank" style="width:60px;" name="RoomRank">
+</td>
+</tr>
+</table>
+</div>
+
+<!--查询按钮-->
+<button class="touch search2" type="submit">
+<p>
+查询
+</p>
+</button>
+
+</form>
+
+<!--前往退住办理按钮-->
+<div class="touch goto">
+<p onclick="Atz(Bdz[2])">
+新增
+</p>
+</div>
+
+
+<!--排序下拉框-->
+<div class="table2">
+<select id="pxval" style="width:150px;" onchange="xxpx()" >
+<option value="0">默认排序</option>
+<option value="1">房间号</option>
+</select>
+</div>
+
+<!--表格-->
+<table border="1" class="one" id="mybg">
+
+<thead>
+<tr>
+<th width="8%">
+<input type="checkbox" id="allcheck" onclick="CheckAll">
+</th>
+<th width="12%">房间号</th>
+<th width="12%">房间面积</th>
+<th width="12%">房间使用状态</th>
+<th width="12%">房间用途</th>
+<th width="12%">床位数量</th>
+<th width="12%">房间等级</th>
+<th width="20%">操作</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+
+
+</table>
+
+<!--信息显示/翻页模块-->
+<div>
+<table class="msg">
+<tr height="51px">
+<td width="30px">有</td>
+<td width="30px" id="mess">0</td>
+<td width="80px">条信息</td>
+</tr>
+</table>
+
+<ul class="one">
+
+<li><p onclick="xxpage(0)">首页</p></li>
+<li><p onclick="xxpage(1)">上一页</p></li>
+<li id="nowpage">0</li>
+<li>/</li>
+<li id="allpage">0</li>
+<li><p onclick="xxpage(2)">下一页</p></li>
+<li><p onclick="xxpage(3)">尾页</p></li>
+<li>
+<table>
+<tr >
+<td height="49px">
+<input style="text;width:100px;" id="pagetz">
+</td>
+</tr>
+</table>
+</li>
+<li><p onclick="xxpage(4)">跳转</p></li>
+<li></li>
+</ul>
+</div>
+
+<!--批量处理模块-->
+<div>
+<ul class="two">
+<li><p onclick="deleteall()">删除勾选项</p></li>
+</ul>
+</div>
+
+</body>
+</html>

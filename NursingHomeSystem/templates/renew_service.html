@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>续费一项增值服务页面</title>
+</head>
+<body>
+    <form action="/renew_service/" method="post">
+        {% csrf_token %}
+        <p>操作员ID</p>
+        <input type="text" name="operator_id">
+        <p>服务ID</p>
+        <input type="text" name="id">
+        <p>时长</p>
+        <input type="number" name="quantity">
+
+        <input type="submit" value="提交">
+    </form>
+
+</body>
+</html>

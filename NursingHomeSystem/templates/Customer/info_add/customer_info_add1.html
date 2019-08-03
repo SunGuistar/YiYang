@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>新增入住信息</title>
+	<link href="../../static/Customer/css/customer_info_add1.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="../../static/check_out/js/jquery.js" ></script>
+  
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.back{
+background-color:#666699;
+width:1127px;
+height:55px;
+position:absolute;
+left:15px;
+top:15px;
+line-height:55px;
+padding-left:23px;
+
+ 
+}
+/* 主标题"客户基本信息填写"文本 */
+.head{
+color:white;
+font-weight:900;
+font-size:30px;
+text-align:center;
+}
+/* 主背景 */
+.back2{
+  border-width:0px;
+  position:absolute;  
+  left:15px;
+  top:90px;
+  width:1150px;
+  height:515px;
+  background:inherit;
+  background-color:rgba(230, 230, 230, 1);
+  box-sizing:border-box;
+  border-width:5px;
+  border-style:solid;
+  border-color:rgba(102, 102, 153, 1);
+  border-radius:0px;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+  box-shadow:none;
+  font-size:20px;
+}
+/* 提示文本 */
+.tip{
+color:red;
+font-size:12px;
+padding-left:5px;
+padding-top:5px;
+}
+/* 红色星星 */
+p em{
+color:red;
+}
+/* 表格 */
+.bg{
+margin-top:0px;
+margin-left:0px;
+text-align:center;
+font-size:20px;
+}
+
+
+/* 鼠标悬停 */
+.xt:hover{
+background-color:#93A8D2;
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+border-radius:10px;
+}
+.u392:hover{
+background-color:#93A8D2;
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 2px;
+cursor:pointer;
+border-radius:10px;
+}
+
+
+</style>
+<script>
+//地址数组
+var Bdz=new Array();
+Bdz[0]="CheckIn_xx.html";
+Bdz[1]="    .html";
+var xxay = false;
+//改变内联框架内容
+function Atz(dz)
+{
+parent.document.getElementById("change").src=dz;
+}
+		$(function(){
+			$.ajaxSetup({
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+		});
+        init_service = function(id, operator_id){
+          var info = {customer_id:id,
+                      operator_id:operator_id};
+          xxpost("init_service.html" ,info);
+          alert("初始服务已添加！");
+        }
+
+        xxpost = function(x,language){
+			$.ajax({
+					url:x,
+					type:"POST",
+					data:language,
+					//dataType:'json',
+					async: xxay,
+					success:function(result){
+
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+
+		}
+</script>
+</head>
+
+<body>
+<!--主标题-->
+<div id="u442" class="ax_default box_1" data-label="客户基本信息填写表头">
+        <div id="u442_div" class=""></div>
+        <div id="u442_text" class="text ">
+          <p><span>客户入住信息填写</span></p>
+        </div>
+      </div>
+<!--主体-->
+<div class="back2"></div>
+
+
+
+<!--床位选择--跳转按钮-->
+<div id="base" class="">
+	<div id="u392" class="u392" data-label="1床位选择">
+            <div id="u392_text" class="text ">
+              <p onclick=Atz(Bdz[1])><span>床位选择</span></p>
+        </div>
+<!--套餐选择--跳转按钮-->		
+	</div>
+		<div id="u392_2" class="u392" data-label="1套餐选择">
+            <div id="u392_2_text" class="text ">
+              <p onclick=init_service(parent.document.getElementById("temp2").value,parent.document.getElementById("username").value)><span>套餐选择</span></p>
+        </div>
+	</div>
+<!--床位信息展示标题 -->
+          <div id="u393" class="ax_default label">
+            <div id="u393_text" class="text ">
+              <p> 床&nbsp;位&nbsp;信&nbsp;息&nbsp;展&nbsp;示：</p>
+            </div>
+          </div>
+		  
+<!--白色背景 -->
+          <div id="u394" class="ax_default label">
+            <div id="u394_text" class="text ">
+              <p>  </p>
+            </div>
+          </div>
+
+<!--床位等级 -->
+          <div id="u370" class="ax_default label">
+            <div id="u370_text" class="text ">
+              <p> 床 位 等 级：</p>
+            </div>
+          </div>
+		  
+		  <div id="u370_" class="ax_default label">
+            <div id="u370__text" class="text ">
+              <input type="text"id="cwdjValue" value="" style="width:120px;height:20px;" disabled="disabled">
+
+            </div>
+          </div>
+		  
+
+
+
+<!--楼 号 -->
+          <div id="u371" class="ax_default label">
+            <div id="u371_text" class="text ">
+              <p> 楼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</p>
+            </div>
+          </div>
+		  <div id="u371_" class="ax_default label">
+            <div id="u371__text" class="text ">
+              <input type="text"id="lhValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+		  
+		  
+		  
+<!--楼 层 -->
+          <div id="u372" class="ax_default label">
+            <div id="u372_text" class="text ">
+              <p> 楼层：</p>
+            </div>
+          </div>
+		  <div id="u372_" class="ax_default label">
+            <div id="u372__text" class="text ">
+              <input type="text"id="lcValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+		  
+<!--房 间 号 -->
+          <div id="u373" class="ax_default label">
+            <div id="u373_text" class="text ">
+              <p> 房间号：</p>
+            </div>
+          </div>
+		  <div id="u373_" class="ax_default label">
+            <div id="u373__text" class="text ">
+              <input type="text"id="fjhValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+
+<!--床 位 号 -->
+          <div id="u374" class="ax_default label">
+            <div id="u374_text" class="text ">
+              <p> 床位号：</p>
+            </div>
+          </div>		  		  
+		  <div id="u374_" class="ax_default label">
+            <div id="u374__text" class="text ">
+              <input type="text"id="cwhValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+
+<!--入住日期 -->
+          <div id="u375" class="ax_default label">
+            <div id="u375_text" class="text ">
+              <p> 入 住 日 期：</p>
+            </div>
+          </div>
+		  
+<!--年 -->
+          <div id="u376" class="ax_default label">
+            <div id="u376_text" class="text ">
+              <p> 年</p>
+            </div>
+          </div>
+
+		  <div id="u376_" class="ax_default label">
+            <div id="u376__text" class="text">
+              <input type="text"id="rzrqnValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+		  
+<!--月 -->
+          <div id="u377" class="ax_default label">
+            <div id="u377_text" class="text ">
+              <p> 月</p>
+            </div>
+          </div>
+		  
+		  <div id="u377_" class="ax_default label">
+            <div id="u377__text" class="text ">
+              <input type="text"id="rzrqyValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+<!--日 -->
+          <div id="u378" class="ax_default label">
+            <div id="u378_text" class="text ">
+              <p> 日 </p>
+            </div>
+          </div>	
+		  <div id="u378_" class="ax_default label">
+            <div id="u378__text" class="text ">
+              <input type="text"id="rzrqrValue" value="" style="width:120px;height:20px;" disabled="disabled">
+           </div>
+          </div>		  
+		  
+<!--入住到期 -->
+          <div id="u379" class="ax_default label">
+            <div id="u379_text" class="text ">
+              <p> 入 住 到 期：</p>
+            </div>
+          </div>		  
+<!--年 -->
+          <div id="u380" class="ax_default label">
+            <div id="u380_text" class="text ">
+              <p> 年</p>
+            </div>
+          </div>
+		  
+		  <div id="u380_" class="ax_default label">
+            <div id="u380__text" class="text ">
+              <input type="text"id="rzdqnValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>		  
+		  
+<!--月 -->
+          <div id="u381" class="ax_default label">
+            <div id="u381_text" class="text ">
+              <p> 月</p>
+            </div>
+          </div>
+		  
+		  <div id="u381_" class="ax_default label">
+            <div id="u381__text" class="text ">
+              <input type="text"id="rzdqyValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>	
+		  
+<!--日 -->
+          <div id="u382" class="ax_default label">
+            <div id="u382_text" class="text ">
+              <p> 日 </p>
+            </div>
+          </div>	
+		  
+		  <div id="u382_" class="ax_default label">
+            <div id="u382__text" class="text ">
+              <input type="text"id="rzdqrValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>			  
+		  
+
+		  		  <div id="u382_" class="ax_default label">
+            <div id="u382__text" class="text ">
+              <input type="text"id="rzdqrValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+		  
+			  
+<!--服务信息展示标题 -->
+          <div id="u383" class="ax_default label">
+            <div id="u383_text" class="text ">
+              <p> 服&nbsp;务&nbsp;信&nbsp;息&nbsp;展&nbsp;示：</p>
+            </div>
+          </div>
+		  
+<!--白色背景 -->
+          <div id="u384" class="ax_default label">
+            <div id="u384_text" class="text ">
+              <p>  </p>
+            </div>
+          </div>
+
+<!--服务数量 -->
+          <div id="u385" class="ax_default label">
+            <div id="u385_text" class="text ">
+              <p> 服务数量：</p>
+            </div>
+          </div>
+		  <div id="u385_" class="ax_default label">
+            <div id="u385__text" class="text ">
+              <input type="text"id="fwslValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+<!--服务总价 -->
+          <div id="u386" class="ax_default label">
+            <div id="u386_text" class="text ">
+              <p> 服务总价：</p>
+            </div>
+          </div>
+		  <div id="u386_" class="ax_default label">
+            <div id="u386__text" class="text ">
+              <input type="text"id="fwzjValue" value="" style="width:120px;height:20px;" disabled="disabled">
+            </div>
+          </div>
+
+		<div id="u443" class="ax_default box_1" data-label="返回">
+			<div class="fh xt">
+			<p onclick="Atz(Bdz[0])">完成</p>
+			</div>
+		</div>
+
+		<div id="u444" class="ax_default box_1" data-label="返回">
+			<div class="fh xt">
+			<p onclick="Atz(Bdz[0])">返回</p>
+			</div>
+		</div>
+
+</div>
+
+
+</div>
+</body>
+</html>

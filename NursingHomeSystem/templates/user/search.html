@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="/../static/jquery.js" ></script>
+
+<meta charset="utf-8">
+<title>搜索主页</title>
+<script>
+//地址数组
+var Bdz=new Array();
+Bdz[0]="sxbd.html";
+Bdz[1]="yh_lr2.html";
+var xxay = true;
+function Acz(dz)
+{
+parent.document.getElementById("change").src=dz;
+}
+</script>
+<style>
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.head1{
+background-color:#666699;
+width:1170px;
+height:60px;
+position:absolute;
+left:5px;
+top:5px;
+}
+/* 主标题文本 */
+.head2{
+color:white;
+font-size:30px;
+line-height:60px;
+font-weight:900;
+text-align:center;
+}
+
+/* 查询模块背景1 */
+.table1{
+background-color:#666699;
+height:55px;
+position:absolute;
+left:22%;
+top:47%;
+font-size:20px;
+color:white;
+overflow:hidden;
+text-align:center;
+}
+/* 查询按钮 */
+.search2{
+	background-color: #666699;
+	width: 180px;
+	height: 54.5px;
+	position: absolute;
+	left: 62.5%;
+	top: 47%;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	line-height: 55px;
+}
+/*筛选*/
+.shaixuan{
+	background-color: #666699;
+	width: 180px;
+	height: 52px;
+	position: absolute;
+	left: 22%;
+	top: 47%;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	line-height: 55px;
+}
+/* 鼠标悬停 */
+.touch:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+</style>
+ <script>
+
+$(function(){
+	//CSRF认证
+	$.ajaxSetup({
+		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+	});
+});
+
+ function Submit(){
+
+			alert($("#search0").val());
+
+				var info={
+					input_text:$("#search0").val(),
+					select_text:$("#select0").val(),
+				};
+                cx_post("yh_lr2.html", info);
+                Acz("yh_lr2.html");
+
+}
+
+
+		function cx_post(u, info){
+			$.ajax({
+					url:u,
+					type:"POST",
+					data:info,
+					//dataType:'json',
+					async: xxay,
+					success:function(result){
+						alert("后端接收成功");
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+			alert("post成功");
+		}
+
+ </script>
+
+</head>
+
+<body>
+<!--主标题-->
+<div class="head1">
+<p class="head2">
+用户信息查找
+</p>
+</div>
+
+<div>
+<table class="table1" >
+<tr >
+
+<td width="150px" >
+
+</td>
+<!--查询项-->
+<td width="250px" >
+ <input type="text" id="search0" style="width:250px;height:30px">
+</td>
+
+<td width="80px">
+
+<select name="sort" style="width:80px;height:35px" id="select0">
+<option value="0">查询项</option>
+<option value="1">姓名</option>
+<option value="2">员工号</option>
+<option value="3">手机号</option>
+<option value="4">系统账号</option>
+</select>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="touch shaixuan">
+<p onclick="Atz(Bdz[0])">
+筛选
+</p>
+</div>
+
+
+<!--查询按钮-->
+<div class="touch search2">
+<p onclick="Submit()">
+查询
+</p>
+</div>
+
+</body>
+</html>

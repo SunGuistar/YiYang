@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="text/javascript" src="../static/jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>用户信息修改</title>
+<style>
+/* 主体 */
+body{
+margin:0px;
+padding:0px;
+}
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.back{
+background-color:#666699;
+width:1127px;
+height:55px;
+position:absolute;
+left:15px;
+top:15px;
+line-height:55px;
+padding-left:23px;
+}
+/* 主标题文本 */
+.head{
+color:white;
+font-weight:900;
+font-size:30px;
+}
+/* 主背景 */
+.back2{
+background-color:#E6E6E6;
+width:1150px;
+height:565px;
+border-color:#666699;
+border-style:solid;
+border-width:5px;
+box-sizing:border-box;
+position:absolute;
+left:15px;
+top:70px;
+}
+/* 提示文本 */
+.tip{
+color:red;
+font-size:13px;
+padding-left:23px;
+padding-top:15px;
+}
+/* 红色星星 */
+p em{
+color:red;
+}
+/*头像*/
+.tx{
+margin-top:-300px;
+margin-left:50px;
+text-align:left;
+font-size:20px;	
+	}
+	
+/* 表格 */
+.bg{
+margin-top:30px;
+margin-left:340px;
+text-align:center;
+font-size:20px;
+}
+/*表格2*/
+.bg2{
+text-valign="top";
+margin-top:-350px;
+margin-left:830px;
+text-align:center;
+text-align:top;
+font-size:20px;
+	}
+/* 中介线2 */
+.line1{
+	width: 5px;
+	height: 555px;
+	position: absolute;
+	left: 809px;
+	top: 4px;
+	background-color: #666699
+}
+/* 中介线1 */
+.line2{
+	width: 5px;
+	height: 555px;
+	position: absolute;
+	left: 295px;
+	top: 5px;
+	background-color: #666699
+}
+	/* 提交按钮 */
+.tj{
+	background-color: #666699;
+	width: 108px;
+	height: 60px;
+	position: absolute;
+	right: 40px;
+	top: 426px;
+	text-align: center;
+	color: white;
+	font-size: 20px;
+	line-height: 65px;
+}
+/* 返回按钮 */
+.fh{
+	background-color: #666699;
+	width: 108px;
+	height: 60px;
+	position: absolute;
+	right: 192px;
+	top: 426px;
+	text-align: center;
+	color: white;
+	font-size: 20px;
+	line-height: 65px;
+}
+/*上传按钮*/
+.sc{
+	background-color: #666699;
+	width: 108px;
+	height: 58px;
+	position: absolute;
+	right: 952px;
+	top: 309px;
+	text-align: center;
+	color: white;
+	font-size: 20px;
+	line-height: 65px;
+}
+	
+
+
+/* 鼠标悬停 */
+.xt:hover{
+background-color:#93A8D2;
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+cursor:pointer;
+}
+</style>
+<script>
+//地址数组
+var Bdz=new Array();
+Bdz[0]="yh_lr2.html";
+Bdz[1]="tz_bl.html";
+Bdz[2]="tz_bl_sg.html";
+var xxay = false
+//不可修改的表格数据存储
+var datanow=[];
+//mybg原本表格集合
+var pageshow1=new Array();
+//mybg可操作的表格集合
+var pageshow=new Array();
+//可操作的表格数据
+var databg=datanow.concat();
+//后端传来的信息数
+var len=databg.length;
+//页数
+var pageall=Math.ceil(len/5);
+//当前页数
+var pagenow=0;
+//mybg可操作的显示
+var pnow;
+var pall;
+var count;
+
+		$(function(){
+			$.ajaxSetup({
+    		data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+			var arg = parent.document.getElementById("temp").value;
+			var language1={ num:"0", staff_id:arg};
+			//post
+
+			xxpost("yh_edit_table_data.html",language1);
+
+            $("#name").val(datanow[0].name);
+            $("#sex").val(datanow[0].sex);
+            $("#birthday").val(datanow[0].birthday);
+            $("#staffType").val(datanow[0].staffType);
+            $("#employeeDate").val(datanow[0].employeeDate);
+            $("#position").val(datanow[0].position);
+            $("#jobTitle").val(datanow[0].jobTitle);
+            $("#phoneNumber").val(datanow[0].phoneNumber);
+            $("#introduction").val(datanow[0].introduction);
+            $("#remarks").val(datanow[0].remarks);
+		});
+
+            xxpost = function(x,language){
+			$.ajax({
+					url:x,
+					type:"POST",
+					data:language,
+					//dataType:'json',
+					async: xxay,
+					success:function(result){
+						alert("后端接收成功");
+						if(xxay==false){
+							var data=JSON.parse(result);
+							datanow=data.concat();
+							xxay=true;
+						}
+					},
+					error:function(){
+						alert("后端接收失败");
+					}
+			});
+			alert("post成功");
+		}
+		//改变内联框架内容
+		function Atz(dz){
+			parent.document.getElementById("change").src=dz;
+		}
+		//注册表格操作点击事件
+
+        modify = function(){
+        var reg1 =/^[0-9]{11}$/;
+		var re1 = new RegExp(reg1);
+		if(!(re1.test($("#phoneNumber").val()) && re1.test($("#phoneNumber").val())))
+		{
+		        alert("请输入正确的手机号！");
+		        return;
+		 }
+		 else{
+		 			var info={
+                    name:$("#name").val(),
+                    sex:$("#sex").val(),
+                    birthday:$("#birthday").val(),
+                    staffType:$("#staffType").val(),
+                    employeeDate:$("#employeeDate").val(),
+                    position:$("#position").val(),
+                    jobTitle:$("#jobTitle").val(),
+                    phoneNumber:$("#phoneNumber").val(),
+                    introduction:$("#introduction").val(),
+                    remarks:$("#remarks").val(),
+				};
+                xxpost("yh_edit_table_modify.html", info);
+                Atz(Bdz[0]);
+		 };
+		}
+
+		//跳转修改界面
+		  $(function(){
+             name = $("#name").text();
+             age = $("#age").text();
+
+            $("#btn").on("click",function(){
+
+            });
+        });
+
+
+
+
+
+
+
+</script>
+</head>
+
+<body>
+<!--主标题-->
+<div class="back">
+<p class="head">
+用户信息修改：
+</p>
+</div>
+<!--主体-->
+
+
+
+<div class="back2">
+<!--表格-->
+<div>
+<table  class="bg">
+<tr height="40px">
+<td width="100">姓名
+</td>
+<td width="250">
+<form action="">
+<input type="text" name="name" style="width:292px;height:35px" value="" id="name">
+</form>
+</td>
+</tr>
+
+<tr height="40px">
+<td width="100">
+性别
+</td>
+<td width="250">
+<form action="">
+<select name="sex" style="width:292px;height:35px" id="sex">
+<option value="0">空</option>
+<option value="M">男</option>
+<option value="F">女</option>
+</select>
+</form>
+</td>
+</tr>
+
+<tr height="40px">
+<td width="100">
+出生日期
+</td>
+<td width="250">
+<form action="">
+<input type="date" name="birthday" style="width:292px;height:35px" id="birthday">
+</form>
+</td>
+</tr>
+
+<tr height="40px">
+<td width="100">
+员工类别
+</td>
+<td width="250">
+<form action="">
+<select name="staffType" style="width:292px;height:35px" id="staffType">
+<option value="0">空</option>
+<option value="固定工">固定工</option>
+<option value="合同工">合同工</option>
+<option value="临时工">临时工</option>
+<option value="代训工">代训工</option>
+<option value="实习生">实习生</option>
+</select>
+</form>
+</td>
+</tr>
+
+<tr height="40px">
+<td width="100">
+入职时间
+</td>
+<td width="250">
+<form action="">
+<input type="date" name="employeeDate" style="width:292px;height:35px" id="employeeDate">
+</form>
+</td>
+</tr>
+
+<tr height="40px">
+<td width="100">
+职务
+</td>
+<td width="250">
+<form action="">
+<select name="position" style="width:292px;height:35px" id="position">
+<option value="0">空</option>
+<option value="护工">护工</option>
+<option value="护士">护士</option>
+<option value="医生">医生</option>
+<option value="管理员">管理员</option>
+</select>
+</form>
+</td>
+</tr>
+	
+<tr height="40px">
+<td width="100">
+职称
+</td>
+<td width="250">
+<form action="">
+<input type="text" name="jobTitle" style="width:292px;height:35px" id="jobTitle">
+</form>
+</td>
+</tr>
+	
+<tr height="40px">
+<td width="100">
+手机号码
+</td>
+<td width="250">
+<form action="">
+<input type="text" name="phoneNumber" style="width:292px;height:35px" id="phoneNumber">
+</form>
+</td>
+</tr>
+
+</table>
+<table height="235"  class="bg2">
+  <tr height="40px">
+    <td width="40" valign="top" align="right" width="100">简介</td>
+    <td width="198"><form action="">
+      <textarea   rows="9" cols="30"  style="OVERFLOW:hidden" name="introduction" id="introduction"></textarea>
+    </form></td>
+  </tr>
+</br>	
+  <tr height="40px">
+    <td valign="top";width="100">备注</td>
+    <td width="198"><form action="">
+      <textarea   rows="9"  cols="30" style="OVERFLOW:hidden" name="remarks" id="remarks"></textarea>
+    </form></td>
+  </tr>
+</table>
+</div>
+<!--表格2-->
+<div></div>
+	
+	
+<!--中介线-->
+<div class="line1"></div>
+<div class="line2"></div>
+<!--按钮模块-->
+<div class="tj xt">
+<p onclick="modify()">
+修改
+</p>
+</div>
+
+<div class="fh xt">
+<p onclick="Atz(Bdz[0])">
+返回
+</p>
+</div>
+
+<!--照片-->
+
+<div id="containner" class="tx">       
+        <img src="" height="200" alt="Image preview..."> <br> 
+    <input type="file" id="imgFile" onchange="previewFile()">
+</div>
+<script>
+ function previewFile() {
+            var preview = document.querySelector('img')          
+            var fileDom = document.querySelector('input[type=file]')
+            // 获取得到file 对象
+            var file = fileDom.files[0]
+            // 限制上传图片的大小
+            if(file.size > 1024 * 1024 * 2) {
+	            alert('图片大小不能超过 2MB!');
+	            return false;
+            }
+            // 创建url
+            var imgUrl = window.URL.createObjectURL(file)
+            preview.setAttribute("src", imgUrl)
+            // 更改img url 以后释放 url
+            preview.onload = function() {
+                // console.log('图片加载成功')
+                URL.revokeObjectURL(imgUrl)
+            }
+  }
+</script>
+
+
+<div class="sc xt">
+<p>
+上传
+</p>
+</div>
+
+</div>
+</body>
+</html>

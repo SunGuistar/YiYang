@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户信息查询删除页面</title>
+</head>
+<body>
+    <form action="/remove/" method="post">
+        {% csrf_token %}
+        <p>员工ID</p>
+        <input type="text" name="staffID">
+        <p>姓名</p>
+        <input type="text" name="name">
+        <p>性别</p>
+        <input type="text" name="sex">
+        <p>年龄</p>
+        <input type="text" name="age">
+        <p>年龄下限</p>
+        <input type="text" name="minAge">
+        <p>年龄上限</p>
+        <input type="text" name="maxAge">
+        <p>员工类型</p>
+        <input type="text" name="category">
+        <p>职务</p>
+        <input type="text" name="position">
+        <p>职称</p>
+        <input type="text" name="jobTitle">
+        <p>手机号码</p>
+        <input type="text" name="phoneNumber">
+
+        <input type="submit" value="提交">
+    </form>
+
+    {% for staff in staff_list %}
+        <p>{{ staff.staffID }}{{ staff.name }}{{ staff.age }}{{ staff.birthday }}{{ staff.category }}
+        {{ staff.employeeDate }}{{ staff.position }}{{ staff.jobTitle }}{{ staff.phoneNumber }}
+        {{ staff.introduction }}{{ staff.remarks }}
+        数据已删除
+        </p>
+    {% endfor %}
+</body>
+</html>

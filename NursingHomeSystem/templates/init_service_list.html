@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>初始化客户非增值服务页面</title>
+</head>
+<body>
+    <form action="/init_service_list/" method="post">
+        {% csrf_token %}
+        <p>用户ID</p>
+        <input type="text" name="client_id">
+        <p>操作员ID</p>
+        <input type="text" name="operator_id">
+        <p>时长</p>
+        <input type="number" name="time">
+
+        <input type="submit" value="提交">
+    </form>
+
+</body>
+</html>

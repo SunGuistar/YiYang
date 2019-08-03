@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+
+<div  style="display: none;">
+<h1 id="add_ok">{{add_ok}}</h1>
+</div>
+
+<div  style="display: none;">
+<!--预处理post_list列表-->
+{% for post in post_list %}
+	<h1 id = "SC_id-{{forloop.counter}}">{{post.itemID}}</h1>
+	<h1 id = "SC_content-{{forloop.counter}}">{{post.name}}</h1>
+	<h1 id = "SC_type-{{forloop.counter}}">{{post.itemType.name}}</h1>
+{% endfor %}
+	<h1 id = "len">{{length}}</h1>
+</div>
+
+<head>
+	<script type="text/javascript" src="../../../static/check_out/js/jquery.js" ></script>
+	<meta charset="utf-8">
+	<title>选择护理项目</title>
+<style>
+/* 文本 */
+p{
+margin:0px;
+padding:0px;
+}
+/* 主标题背景 */
+.head1{
+background-color:#666699;
+width:1170px;
+height:60px;
+position:absolute;
+left:5px;
+top:5px;
+}
+/* 主标题文本 */
+.head2{
+color:white;
+font-size:30px;
+line-height:60px;
+font-weight:900;
+text-align:center;
+}
+/* 查询模块背景1 */
+.table1{
+background-color:#666699;
+width:580px;
+height:55px;
+position:absolute;
+left:15px;
+top:86px;
+font-size:20px;
+color:white;
+overflow:hidden;
+text-align:center;
+}
+/* 查询按钮 */
+.search2{
+background-color:#666699;
+width:120px;
+height:55px;
+position:absolute;
+left:580px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+border:none;
+}
+
+/*选择按钮*/
+.choose{
+background-color:#666699;
+width:120px;
+height:55px;
+position:absolute;
+left:580px;
+top:580px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+border:none;
+}
+/* 鼠标悬停 */
+.touch:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+background-color:#93A8D2;
+cursor:pointer;
+}
+/* 新增按钮 */
+.goto{
+background-color:#666699;
+width:120px;
+height:55px;
+position:absolute;
+left:700px;
+top:86px;
+font-size:20px;
+color:white;
+text-align:center;
+line-height:55px;
+}
+/* 排序下拉框 */
+.table2{
+background-color:#666699;
+width:465px;
+position:absolute;
+left:700px;
+top:86px;
+font-size:20px;
+text-align:center;
+line-height:55px;
+height:55px;
+}
+/* 主要表格 */
+table.one{
+padding:0px;
+margin:0px;
+border-collapse:collapse;
+width:1150px;
+text-align:center;
+position:absolute;
+left:15px;
+top:141px;
+font-size:20px;
+overflow: hidden;
+}
+table.one thead tr th{
+background-color:#666699;
+color:white;
+height:55px;
+}
+table.one tbody tr td{
+background-color:white;
+color:black;
+height:55px;
+}
+table tbody tr td input[type="text"]{
+width:100px;
+}
+/* 信息显示模块 */
+.msg{
+background-color:#666699;
+position:absolute;
+left:15px;
+top:490px;
+font-size:20px;
+text-align:center;
+color:white;
+}
+
+/* 翻页模块 */
+ul.one{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:315px;
+top:490px;
+}
+ul.one li
+{
+color:white;
+float:left;
+width:85px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+}
+
+/* 批量处理模块 */
+ul.two{
+list-style-type:none;
+margin:0;
+padding:0;
+position:absolute;
+left:250px;
+top:545px;
+}
+ul.two li
+{
+float:left;
+width:230px;
+height:55px;
+text-align:center;
+line-height:55px;
+background-color:#666699;
+font-size:20px;
+display:inline-block;
+color:white;
+}
+
+li p:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+background-color:#93A8D2;
+cursor:pointer;
+}
+/*操作按钮*/
+a{
+padding-left:10px;
+text-align:center;
+line-height:55px;
+font-size:20px;
+display:inline-block;
+}
+a:hover{
+box-shadow:rgba(0,0,0,0.2) 0px 5px 5px 0px inset;
+text-shadow:black 1px 1px 5px;
+background-color:#93A8D2;
+cursor:pointer;
+}
+.modal {
+    display: none; /* 默认隐藏 */
+    /*生成绝对定位的元素，相对于浏览器窗口进行定位。*/
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    /*设置弹窗位置*/
+    padding-top: 200px;
+    padding-bottom: 300px;
+    /*浮在全屏上*/
+    width: 100%;
+    height:  100%;
+    /*overflow：auto；如果内容被修剪，则浏览器会显示滚动条，以便查看其余内容。*/
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+/* 弹窗内容 */
+.modal-content {
+    /*position: relative;*/
+    /*弹窗背景色设置*/
+    background-color:#E6E6E6;
+    margin: auto;
+    padding: 20px auto;
+    width: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* 添加动画 */
+@-webkit-keyframes animatetop {
+    from {top:-200px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-200px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* 关闭按钮 */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+	display: block;
+	line-height: 15px;
+    padding: 2px 10px;
+    background-color:#666699;
+
+    color: white;
+    text-align: left;
+}
+
+.modal-body {
+	padding: 30px 16px;
+	font-size: 25px;
+	height: 160px;
+	text-align:center;
+}
+
+.modal-footer {
+	display: block;
+	line-height: 30px;
+    padding: 2px 10px;
+    color: white;
+	position:absolute;
+left:510px;
+top:400px;
+}
+.modal-footer1 {
+	display: block;
+	line-height: 30px;
+    padding: 2px 10px;
+    color: white;
+	position:absolute;
+left:600px;
+top:400px;
+}
+</style>
+<script>
+function openwin() {
+	add_ok = document.getElementById("add_ok").innerHTML;
+	if(add_ok == "false")
+		alert("该客户已经选择了护理项目，请先删除再增加");
+}
+function openwindow(){
+	var arr = new Array();
+	var items = document.getElementsByName("zhong");
+	for (i = 0; i < items.length; i++) {
+		if (items[i].checked) {
+			arr.push(items[i].value);
+		}
+	}
+	var num = document.getElementById('Inum');
+	num.value = arr.length.toString();
+	//获取弹窗得div
+	var modal = document.getElementById('myModal');
+	// 获取 <span> 元素，用于关闭弹窗 （X）
+	var span = document.getElementsByClassName("close")[0];
+	//获取弹窗中得确定按钮
+	var ok=document.getElementsByClassName("ok")[0];
+	//获取弹窗中得取消按钮
+	var no=document.getElementsByClassName("no")[0];
+	//窗体弹出
+	modal.style.display = "block";
+	//点击窗体ok
+	ok.onclick=function(){
+		//执行弹出窗体得确定后得操作
+		alert("执行确定按钮点击得操作");
+		//关闭窗口
+		modal.style.display = "none";
+	}
+	//点击窗体取消按钮
+	no.onclick=function(){
+		//直接关闭窗口
+		modal.style.display = "none";
+	}
+	// 点击 <span> (x), 关闭弹窗
+	span.onclick = function() {
+		//直接关闭窗口
+		modal.style.display = "none";
+	}
+	// 在用户点击其他地方时，关闭弹窗
+	/*window.onclick = function(event) {
+		//点击窗口外内容，关闭窗口
+		if (event.target == modal) modal.style.display = "none";
+	}*/
+	ok.onclick=function CheckPost()
+    {
+        if (ID.UserID.value=="")
+        {
+            alert("请填写用户ID");
+            ID.UserID.focus();
+            return false;
+        }
+}
+
+}
+
+//地址数组
+var Bdz=new Array();
+Bdz[0]="tz.html";
+Bdz[1]="tz_bl.html";
+Bdz[2]="tz_bl_sg.html";
+//不可修改的表格数据存储
+
+//获取数据库后台数据
+var slen = document.getElementById("len").innerHTML;
+var len = parseInt(slen);
+
+var datanow = [
+];
+
+//批量显示数据库数据
+for (var i=1; i<=len; i++)
+{
+	var SC_id = document.getElementById("SC_id-" + i.toString()).innerHTML;
+	var SC_content = document.getElementById("SC_content-" + i.toString()).innerHTML;
+	var SC_type = document.getElementById("SC_type-" + i.toString()).innerHTML;
+	datanow[i-1] = {"id":SC_id,"area":SC_content,"state":SC_type};
+}
+
+//mybg原本表格集合
+var pageshow1=new Array();
+//mybg可操作的表格集合
+var pageshow=new Array();
+//可操作的表格数据
+var databg=datanow.concat();
+//后端传来的信息数
+var len=databg.length;
+//页数
+var pageall=Math.ceil(len/5);
+//当前页数
+var pagenow=0;
+//mybg可操作的显示
+var pnow;
+var pall;
+var count;
+
+		$(function(){
+
+			//注册表格操作点击事件
+			registerClick();
+			//批量处理按钮点击事件
+
+			//初始化显示数据
+			databg=datanow.concat();
+			len=databg.length;
+			pageall=Math.ceil(len/5);
+			pnow=pagenow;
+			pall=pageall;
+			count=len;
+			//初始化表格数据
+			addRow();
+			//初始化页数,当前页数，信息数
+			$("#mess").text(len);
+			$("#allpage").text(pageall);
+			if(pageall>0){
+				pagenow=1;
+				pnow=pagenow;
+				$("#nowpage").text(pagenow);
+			}
+			//初始化显示
+			var $table=$('#mybg');
+			$table.find('tbody tr').hide();
+			for(var i=0,j=0;i<pageall;i++){
+				pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+				j=j+5;
+			}
+			pageshow=pageshow1.concat();
+			pageshow[0].show();
+			//全选框
+			$("#allcheck").change(function(){
+				var flage=$(this).is(":checked");
+				$("input[type=checkbox]").each(function(){
+					$(this).prop("checked",flage);
+				})
+			});
+		});
+		//初始化表格数据
+		function addRow(){
+			var i=0;
+			for(i;i<databg.length;i++){
+				var str = "<tr><td><input type='checkbox' name='zhong'></td><td>"+databg[i].id+"</td><td>"+databg[i].area+"</td><td>"+databg[i].state+"</td></tr>";
+				$("#mybg tbody").append(str);
+				}
+			registerClick();
+		}
+		//改变内联框架内容
+		function Atz(dz){
+			parent.document.getElementById("change").src=dz;
+		}
+		//注册表格操作点击事件
+		function registerClick(){
+			//防止重复注册事件：.off("click")
+			$("#mybg tbody tr td a").off("click").on("click", function(){
+				var text = $(this).text();
+				switch(text){
+					case "修改":
+						updateRow($(this));
+						break;
+					case "保存":
+						saveRow($(this));
+						break;
+					case "删除":
+						deleteRow($(this),0);
+						break;
+					case "审核":
+						deleteRow($(this),1);
+						break;
+				}
+			});
+		}
+
+
+
+		//修改行
+		function updateRow(t){
+			$(t).text("保存");
+			var tr = $(t).parent().parent();
+			var tds = $(tr).children();
+			for (var i = 0; i < tds.length; i++) {
+				if(i>0 && i<tds.length-1){
+					var td = tds[i];
+					var text = $(td).text();
+					$(td).html("<input type='text' value='"+text+"'>");
+				}
+			}
+		}
+
+		//保存行
+		function saveRow(t){
+			$(t).text("修改");
+			var tr = $(t).parent().parent();
+			var tds = $(tr).children();
+			for (var i = 0; i < tds.length; i++) {
+				if(i>0 && i<tds.length-1){
+					var td = tds[i];
+					var text = $(td).children("input").val();
+					$(td).html(text);
+				}
+			}
+		}
+
+
+		//载入翻页
+		function xxpage(x){
+
+			//首页
+			if(x==0){
+				pageshow[pnow-1].hide();
+				pnow=1;
+				pageshow[0].show();
+				$("#nowpage").text(pnow);
+			}
+			//上一页
+			else if(x==1){
+				if(pnow-1>0){
+					pageshow[pnow-1].hide();
+					pnow=pnow-1;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+			//下一页
+			else if(x==2){
+				if(pnow<pageshow.length){
+					pageshow[pnow-1].hide();
+					pnow=pnow+1;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+			//尾页
+			else if(x==3){
+				pageshow[pnow-1].hide();
+				pnow=pall;
+				pageshow[pnow-1].show();
+				$("#nowpage").text(pnow);
+			}
+			//跳转
+			else if(x==4){
+				var x=$("#pagetz").val();
+				if(!isNaN(x)&&x<=pageshow.length&&x>0){
+					pageshow[pnow-1].hide();
+					pnow=x;
+					pageshow[pnow-1].show();
+					$("#nowpage").text(pnow);
+				}
+			}
+		}
+		//查找
+		function xxsearch(){
+			var x1=$("#search_id").val();
+			var x2=$("#search_area").val();
+
+			//当没有查询内容时还原
+			if(x1==""&&x2==""){
+				pnow=pagenow;
+				pall=pageall;
+				count=len;
+				pageshow=pageshow1.concat();
+				$("#mybg").find('tbody tr').hide();
+				pageshow[0].show();
+				$("#nowpage").text(pnow);
+				$("#allpage").text(pall);
+				$("#mess").text(count);
+			}
+			else{
+					$('#mybg').find('tbody tr').show();
+					$('#mybg tbody tr').find('td:eq(1)').not(":contains('"+x1+"')").parent().hide();
+					$('#mybg tbody tr').find('td:eq(2)').not(":contains('"+x2+"')").parent().hide();
+
+					//查询后信息数
+					var search_count=$('#mybg tbody tr:visible').length;
+					//查询后页数
+					var search_pageall=Math.ceil(search_count/5);
+					//查询后当前页数
+					var search_pagenow=0;
+					if(search_count>0){
+						search_pagenow=1;
+					}
+					pnow=search_pagenow;
+					pall=search_pageall;
+					count=search_count;
+
+					$("#nowpage").text(pnow);
+					$("#allpage").text(pall);
+					$("#mess").text(count);
+					//查询后表格数据数组
+					var searchshow=new Array();
+					for(var i=0,j=0;i<pall;i++){
+						searchshow[i]=$('#mybg tbody tr:visible').slice(j,j+5);
+						j=j+5;
+					}
+					$('#mybg').find('tbody tr').hide();
+
+					pageshow=searchshow.concat();
+					pageshow[0].show();
+				}
+		}
+		//排序
+		function xxpx(){
+			if($("#pxval").val()==1){
+
+				//清除数据
+				$('#mybg tbody').empty("");
+				//排序数据数组
+				var pxnow=new Array();
+				pxnow=databg.concat();
+				//排序数据数组排序
+				for(var i=0;i<pxnow.length;i++){
+					for(var j=i;j<pxnow.length;j++){
+						if(pxnow[i].id>pxnow[j].id){
+							var temp=pxnow[i];
+							pxnow[i]=pxnow[j];
+							pxnow[j]=temp;
+						}
+					}
+				}
+				databg=pxnow.concat();
+				addRow();
+				//初始化显示
+				var pxshow=new Array();
+				var $table=$('#mybg');
+				$table.find('tbody tr').hide();
+				for(var i=0,j=0;i<pageall;i++){
+					pxshow[i]=$table.find('tbody tr').slice(j,j+5);
+					j=j+5;
+				}
+				//$("#mybg").find('tbody tr').hide();
+				pageshow=pxshow.concat();
+				pageshow[0].show();
+			}
+			else{
+				//清除数据
+				$('#mybg tbody').empty("");
+				databg=datanow.concat();
+				addRow();
+				//初始化显示
+				var $table=$('#mybg');
+				$table.find('tbody tr').hide();
+				for(var i=0,j=0;i<pageall;i++){
+					pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+					j=j+5;
+				}
+				$("#mybg").find('tbody tr').hide();
+				pageshow=pageshow1.concat();
+				pageshow[0].show();
+			}
+			//排序后查找(查询后排序/只输入文本而未查询后排序)
+			//xxsearch();
+		}
+		//删除数组元素
+		function removeV(arr,val){
+			for(var i=0;i<arr.length;i++){
+				if(arr[i].id==val){
+					arr.splice(i,1);
+					break;
+				}
+			}
+		}
+		//表格，部分完全初始化
+		function restartbg(){
+			//清除数据
+			$('#mybg tbody').empty("");
+			//重新初始化表格
+			databg=datanow.concat();
+			addRow();
+			len=databg.length;
+			pageall=Math.ceil(len/5);
+			pagenow=0;
+			//初始化可操作显示数据
+			pnow=pagenow;
+			pall=pageall;
+			count=len;
+			if(pageall>0){
+				pagenow=1;
+				pnow=pagenow;
+			}
+			$("#mess").text(count);
+			$("#allpage").text(pall);
+			$("#nowpage").text(pnow);
+			//初始化表格显示数组
+			var $table=$('#mybg');
+			$table.find('tbody tr').hide();
+			for(var i=0,j=0;i<pageall;i++){
+				pageshow1[i]=$table.find('tbody tr').slice(j,j+5);
+				j=j+5;
+			}
+			pageshow=pageshow1.concat();
+			pageshow[0].show();
+		}
+</script>
+</head>
+
+<body onload="openwin()">
+<!--主标题-->
+<div class="head1">
+<p class="head2">
+设置护理级别
+</p>
+</div>
+
+<!--提交表单-->
+<form action="?op=1" method="post">
+{% csrf_token %} <!-- 用于防止出错-->
+<!--查询模块-->
+<div>
+<table class="table1" >
+<tr >
+<!--房间号查询-->
+<td width="290px" >
+护理项目ID: <input type="text" style="width:100px;" id="search_id" name="SC_id">
+</td>
+<!--房间面积查询-->
+<td width="290px" >
+护理项目名称 <input type="text" id="search_area" style="width:100px;" name="SC_content">
+</td>
+</tr>
+</table>
+
+</div>
+
+<!--查询按钮-->
+<button class="touch search2" type="submit">
+<p>
+查询
+</p>
+</button>
+</form>
+
+<button class="touch choose" onclick="openwindow()">
+<p>
+选择
+</p>
+</button >
+
+
+<!--排序下拉框-->
+<div class="table2">
+<select id="pxval" style="width:150px;" onchange="xxpx()" >
+<option value="0">--请选择--</option>
+<option value="1">护理项目ID</option>
+</select>
+</div>
+
+<!--表格-->
+<table border="1" class="one" id="mybg">
+
+<thead>
+<tr>
+<th width="8%">
+<input type="checkbox" id="allcheck" onclick="CheckAll">
+</th>
+<th width="20">护理项目ID</th>
+<th width="20">护理项目名称</th>
+<th width="20">护理项目类别</th>
+
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+
+
+</table>
+
+<!--信息显示/翻页模块-->
+<div>
+<table class="msg">
+<tr height="51px">
+<td width="85px">有</td>
+<td width="127px" id="mess">0</td>
+<td width="85px">条信息</td>
+</tr>
+</table>
+
+
+
+
+<ul class="one">
+<li></li>
+<li><p onclick="xxpage(0)">首页</p></li>
+<li><p onclick="xxpage(1)">上一页</p></li>
+<li id="nowpage">0</li>
+<li>/</li>
+<li id="allpage">0</li>
+<li><p onclick="xxpage(2)">下一页</p></li>
+<li><p onclick="xxpage(3)">尾页</p></li>
+<li>
+<table>
+<tr >
+<td height="49px">
+<input style="text;width:100px;" id="pagetz">
+</td>
+</tr>
+</table>
+</li>
+<li><p onclick="xxpage(4)">跳转</p></li>
+</ul>
+</div>
+
+<!--批量处理模块
+<div>
+<ul class="two">
+<li><p onclick="deleteall(0)">批量删除所选项</p></li>
+<li><p onclick="deleteall(1)">批量审核所选项</p></li>
+<li><p onclick="Atz(Bdz[0])">返回</p></li>
+</ul>
+</div>-->
+
+	<!-- 弹窗隐藏区域 -->
+<div id="myModal" class="modal">
+	  <!-- 弹窗内容 -->
+		<div class="modal-content">
+		  <div class="modal-header">
+			<span class="close">&times;</span>
+			<h2>客户ID绑定</h2>
+		  </div>
+			<form action="?op=2" method="post" name="ID" onsubmit="return CheckPost();">
+			{% csrf_token %} <!-- 用于防止出错-->
+		  <div class="modal-body">
+			<table>
+
+		  <tr>
+			<td>客户ID：</td>
+		   <td>
+		   <input type="text" name="UserID" style="font-size:20px;width:150px;">
+		   </td>
+		   </tr>
+
+		   <tr>
+			<td>项目数量：</td>
+			<td>
+			<input type="text" name="ItemNumber" id="Inum" style="font-size:20px;width:150px;"><br>
+			</td>
+		   </tr>
+
+		   </table>
+		  </div>
+			<div class="modal-footer">
+			<button class="ok">确定</button>
+			</div> </form>
+		  <div class="modal-footer1">
+			  <button class="no">取消</button>
+		</div>
+</div>
+
+</body>
+</html>
